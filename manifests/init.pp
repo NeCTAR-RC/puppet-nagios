@@ -27,7 +27,7 @@ class nagios {
 		mode => 600,
 		owner => 'nagios',
 		require => File['/home/nagios/.ssh'],
-		source => 'puppet:///nagios/nagios_authorized_keys',
+		source => 'puppet:///modules/nagios/nagios_authorized_keys',
 	}
 
 	file { '/home/nagios/libexec':

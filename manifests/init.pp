@@ -16,7 +16,6 @@ class nagios {
   file {'/home/nagios/.ssh':
 	ensure  => directory,
 	owner   => nagios,
-    group   => nagios,
 	mode    => '0600',
 	require => User['nagios'],
   }
@@ -24,7 +23,6 @@ class nagios {
   file {'/home/nagios/.ssh/authorized_keys':
 	ensure  => file,
 	owner   => nagios,
-    group   => nagios,
 	mode    => '0600',
 	source  => 'puppet:///modules/nagios/nagios_authorized_keys',
 	require => File['/home/nagios/.ssh'],

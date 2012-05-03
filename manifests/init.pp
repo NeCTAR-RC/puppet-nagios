@@ -3,7 +3,11 @@ class nagios {
   package {'nagios-plugins-basic':
     ensure => present,
   }
-  
+
+   package {'libipc-run-perl':
+    ensure => present,
+  }
+ 
   user {'nagios':
     ensure     => present,
     gid        => 'users',
@@ -43,6 +47,15 @@ class nagios {
     source  => 'puppet:///modules/nagios/check_memcached.py',
     require => Package['nagios-plugins-basic'],
   }
+
+  file { '/etc/sudoers.d/sudoers_nagios':
+    owner   => 'root',
+    group   => 'root',
+    mode    => 440,
+    source  => 'puppet:///nagios/sudoers_nagios',
+    require => Package['nagios-plugins-basic'],
+  }
+
 
   if $virtual == "physical" {
     file { '/usr/lib/nagios/plugins/check_ipmi_sensor.pl':

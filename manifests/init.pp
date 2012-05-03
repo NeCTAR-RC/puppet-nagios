@@ -43,5 +43,17 @@ class nagios {
     source  => 'puppet:///modules/nagios/check_memcached.py',
     require => Package['nagios-plugins-basic'],
   }
+
+  if $virtual == "physical" {
+    file { '/usr/lib/nagios/plugins/check_ipmi_sensor.pl':
+      ensure  => file,
+      owner   => root,
+      group   => root,
+      mode    => '0755',
+      source  => 'puppet:///modules/nagios/check_ipmi_sensor.pl',
+      require => Package['nagios-plugins-basic','libipc-run-perl'],
+    }
+  }
+
   
 }

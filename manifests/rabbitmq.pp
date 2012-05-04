@@ -1,4 +1,4 @@
-class nagios::rabitmq {
+class nagios::rabbitmq {
 
   package { 'libnagios-plugin-perl':
     ensure => "latest",

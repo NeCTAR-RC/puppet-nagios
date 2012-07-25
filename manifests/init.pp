@@ -60,7 +60,7 @@ class nagios {
     owner   => 'root',
     group   => 'root',
     mode    => 440,
-    source  => 'puppet:///nagios/sudoers_nagios',
+    source  => 'puppet:///modules/nagios/sudoers_nagios',
     require => Package['nagios-plugins-basic'],
   }
 

@@ -1,13 +1,13 @@
 class nagios {
-  
+
   package {'nagios-plugins-basic':
     ensure => present,
   }
 
-   package {'libipc-run-perl':
+  package {'libipc-run-perl':
     ensure => present,
   }
- 
+
   user {'nagios':
     ensure     => present,
     gid        => 'users',
@@ -16,14 +16,14 @@ class nagios {
     home       => '/home/nagios',
     managehome => true,
   }
-  
+
   file {'/home/nagios/.ssh':
     ensure  => directory,
     owner   => nagios,
     mode    => '0600',
     require => User['nagios'],
   }
-  
+
   file {'/home/nagios/.ssh/authorized_keys':
     ensure  => file,
     owner   => nagios,
@@ -31,12 +31,12 @@ class nagios {
     source  => 'puppet:///modules/nagios/nagios_authorized_keys',
     require => File['/home/nagios/.ssh'],
   }
-  
+
   file {'/home/nagios/libexec':
     ensure  => symlink,
     target  => '/usr/lib/nagios/plugins',
-    require => [ User['nagios'],
-                 Package['nagios-plugins-basic']],
+    require => [User['nagios'],
+                Package['nagios-plugins-basic']],
   }
 
   file { '/usr/lib/nagios/plugins/check_md_raid':
@@ -76,5 +76,16 @@ class nagios {
     }
   }
 
-  
+}
+
+define nagios::command ($check_command)
+{
+  file { "/etc/nagios3/conf.d/${name}.cfg":
+    mode    => '0644',
+    owner   => 'root',
+    group   => 'root',
+    notify  => Service['nagios3'],
+    content => template('nagios/nagios_command.erb');
+  }
+
 }

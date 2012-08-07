@@ -35,14 +35,14 @@ define nagios::nrpe::command ($check_command)
 
 }
 
-define nagios::nrpe::service ($nrpe_command, $check_command) {
+define nagios::nrpe::service ($check_command) {
   nagios::nrpe::command {
     $name:
-      check_command => $nrpe_command;
+      check_command => $check_command;
   }
 
   nagios::service {
     $name:
-      check_command => $check_command
+      check_command => "check_nrpe_1arg!${name}"
   }
 }

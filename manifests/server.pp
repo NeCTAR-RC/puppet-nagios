@@ -92,27 +92,27 @@ class nagios::server {
     notify  => Service['nagios3'],
   }
 
-  file {['/etc/nagios3/conf.d/nagios_command.cfg',
-         '/etc/nagios3/conf.d/nagios_contact.cfg',
-         '/etc/nagios3/conf.d/nagios_contactgroup.cfg',
-         '/etc/nagios3/conf.d/nagios_host.cfg',
-         '/etc/nagios3/conf.d/nagios_hostdependency.cfg',
-         '/etc/nagios3/conf.d/nagios_hostescalation.cfg',
-         '/etc/nagios3/conf.d/nagios_hostextinfo.cfg',
-         '/etc/nagios3/conf.d/nagios_hostgroup.cfg',
-         '/etc/nagios3/conf.d/nagios_hostgroupescalation.cfg',
-         '/etc/nagios3/conf.d/nagios_service.cfg',
-         '/etc/nagios3/conf.d/nagios_servicedependency.cfg',
-         '/etc/nagios3/conf.d/nagios_serviceescalation.cfg',
-         '/etc/nagios3/conf.d/nagios_serviceextinfo.cfg',
-         '/etc/nagios3/conf.d/nagios_servicegroup.cfg',
-         '/etc/nagios3/conf.d/nagios_timeperiod.cfg']:
-           ensure  => file,
-           replace => false,
-           notify  => Service['nagios3'],
-           mode    => '0644',
-           owner   => root,
-           group   => 0;
+  file { ['/etc/nagios3/conf.d/nagios_command.cfg',
+          '/etc/nagios3/conf.d/nagios_contact.cfg',
+          '/etc/nagios3/conf.d/nagios_contactgroup.cfg',
+          '/etc/nagios3/conf.d/nagios_host.cfg',
+          '/etc/nagios3/conf.d/nagios_hostdependency.cfg',
+          '/etc/nagios3/conf.d/nagios_hostescalation.cfg',
+          '/etc/nagios3/conf.d/nagios_hostextinfo.cfg',
+          '/etc/nagios3/conf.d/nagios_hostgroup.cfg',
+          '/etc/nagios3/conf.d/nagios_hostgroupescalation.cfg',
+          '/etc/nagios3/conf.d/nagios_service.cfg',
+          '/etc/nagios3/conf.d/nagios_servicedependency.cfg',
+          '/etc/nagios3/conf.d/nagios_serviceescalation.cfg',
+          '/etc/nagios3/conf.d/nagios_serviceextinfo.cfg',
+          '/etc/nagios3/conf.d/nagios_servicegroup.cfg',
+          '/etc/nagios3/conf.d/nagios_timeperiod.cfg']:
+            ensure  => file,
+            replace => false,
+            notify  => Service['nagios3'],
+            mode    => '0644',
+            owner   => root,
+            group   => 0;
   }
 
   file { 'nagios_confd':
@@ -120,6 +120,7 @@ class nagios::server {
     path    => '/etc/nagios3/conf.d/',
     purge   => true,
     recurse => true,
+    force   => true,
     notify  => Service['nagios3'],
     mode    => '0750',
     owner   => root,

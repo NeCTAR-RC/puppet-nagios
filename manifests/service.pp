@@ -24,6 +24,7 @@ define nagios::service (
     host_name => $host_name,
     use => $use,
     notify => Service[nagios],
+    tag => $environment,
     service_description => $service_description ?{
       'absent' => $name,
       default => $service_description

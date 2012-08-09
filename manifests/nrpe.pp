@@ -5,6 +5,8 @@ class nagios::nrpe {
       ensure => present;
     'nagios-nrpe-plugin':
       ensure => present;
+    'nagios-plugins':
+      ensure => present;
   }
 
   service { 'nagios-nrpe-server':

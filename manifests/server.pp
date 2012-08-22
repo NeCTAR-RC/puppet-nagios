@@ -2,10 +2,36 @@ class nagios::server {
 
   package {'nagios3':
     ensure => present,
+    notify => Exec['nagios_exec_fix', 'nagios_exec_fix1'],
   }
 
   service {'nagios3':
     ensure => running,
+  }
+
+  file {'/etc/nagios3/nagios.cfg':
+    ensure  => file,
+    owner   => root,
+    group   => root,
+    mode    => '0644',
+    source  => 'puppet:///modules/nagios/nagios.cfg',
+    require => Package['nagios3'],
+    notify  => Service['nagios3'],
+  }
+
+  exec {
+    'nagios_exec_fix':
+      command => 'dpkg-statoverride --update --add nagios www-data 2710 /var/lib/nagios3/rw',
+      unless  => 'dpkg-statoverride --list /var/lib/nagios3/rw',
+      path    => '/usr/sbin/',
+      require => Package['nagios3'],
+      notify  => Service['nagios3'];
+    'nagios_exec_fix1':
+      command => 'dpkg-statoverride --update --add nagios nagios 751 /var/lib/nagios3',
+      unless  => 'dpkg-statoverride --list /var/lib/nagios3',
+      path    => '/usr/sbin/',
+      require => Package['nagios3'],
+      notify  => Service['nagios3'];
   }
 
   Nagios_command <<||>>
@@ -41,70 +67,70 @@ class nagios::server {
         purge => true;
   }
 
-  Nagios_command <||> {
+  Nagios_command <| tag == $environment |> {
     target  => '/etc/nagios3/conf.d/nagios_command.cfg',
     require => File['nagios_confd'],
     notify  => Service['nagios3'],
   }
-  Nagios_contact <||> {
+  Nagios_contact <| tag == $environment |> {
     target  => '/etc/nagios3/conf.d/nagios_contact.cfg',
     require => File['nagios_confd'],
     notify  => Service['nagios3'],
   }
-  Nagios_contactgroup <||> {
+  Nagios_contactgroup <| tag == $environment |> {
     target  => '/etc/nagios3/conf.d/nagios_contactgroup.cfg',
     require => File['nagios_confd'],
     notify  => Service['nagios3'],
   }
-  Nagios_host <||> {
+  Nagios_host <| tag == $environment |> {
     target  => '/etc/nagios3/conf.d/nagios_host.cfg',
     require => File['nagios_confd'],
     notify  => Service['nagios3'],
   }
-  Nagios_hostdependency <||> {
+  Nagios_hostdependency <| tag == $environment |> {
     target => '/etc/nagios3/conf.d/nagios_hostdependency.cfg',
     notify => Service['nagios3'],
   }
-  Nagios_hostescalation <||> {
+  Nagios_hostescalation <| tag == $environment |> {
     target => '/etc/nagios3/conf.d/nagios_hostescalation.cfg',
     notify => Service['nagios3'],
   }
-  Nagios_hostextinfo <||> {
+  Nagios_hostextinfo <| tag == $environment |> {
     target  => '/etc/nagios3/conf.d/nagios_hostextinfo.cfg',
     require => File['nagios_confd'],
     notify  => Service['nagios3'],
   }
-  Nagios_hostgroup <||> {
+  Nagios_hostgroup <| tag == $environment |> {
     target  => '/etc/nagios3/conf.d/nagios_hostgroup.cfg',
     require => File['nagios_confd'],
     notify  => Service['nagios3'],
   }
-  Nagios_service <||> {
+  Nagios_service <| tag == $environment |> {
     target  => '/etc/nagios3/conf.d/nagios_service.cfg',
     require => File['nagios_confd'],
     notify  => Service['nagios3'],
   }
-  Nagios_servicegroup <||> {
+  Nagios_servicegroup <| tag == $environment |> {
     target  => '/etc/nagios3/conf.d/nagios_servicegroup.cfg',
     require => File['nagios_confd'],
     notify  => Service['nagios3'],
   }
-  Nagios_servicedependency <||> {
+  Nagios_servicedependency <| tag == $environment |> {
     target  => '/etc/nagios3/conf.d/nagios_servicedependency.cfg',
     require => File['nagios_confd'],
     notify  => Service['nagios3'],
   }
-  Nagios_serviceescalation <||> {
+  Nagios_serviceescalation <| tag == $environment |> {
     target  => '/etc/nagios3/conf.d/nagios_serviceescalation.cfg',
     require => File['nagios_confd'],
     notify  => Service['nagios3'],
   }
-  Nagios_serviceextinfo <||> {
+  Nagios_serviceextinfo <| tag == $environment |> {
     target  => '/etc/nagios3/conf.d/nagios_serviceextinfo.cfg',
     require => File['nagios_confd'],
     notify  => Service['nagios3'],
   }
-  Nagios_timeperiod <||> {
+  Nagios_timeperiod <| tag == $environment |> {
     target  => '/etc/nagios3/conf.d/nagios_timeperiod.cfg',
     require => File['nagios_confd'],
     notify  => Service['nagios3'],
@@ -147,8 +173,10 @@ class nagios::server {
 
   nagios_command {
     'http_port':
+      tag          => $environment,
       command_line => '$USER1$/check_http -p $ARG1$ -H $HOSTADDRESS$ -I $HOSTADDRESS$';
     'https_port':
+      tag          => $environment,
       command_line => '$USER1$/check_http --ssl -p $ARG1$ -H $HOSTADDRESS$ -I $HOSTADDRESS$';
   }
 }

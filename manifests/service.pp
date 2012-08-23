@@ -23,7 +23,7 @@ define nagios::service (
     check_command => $check_command,
     host_name => $host_name,
     use => $use,
-    notify => Service[nagios],
+    notify => Service["nagios3"],
     tag => $environment,
     service_description => $service_description ?{
       'absent' => $name,

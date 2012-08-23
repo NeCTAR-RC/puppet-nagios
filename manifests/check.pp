@@ -3,7 +3,7 @@ class nagios::check::md_raid {
 
   nagios::nrpe::service {
     'check_md_raid':
-      check_command => '/usr/lib/nagios/plugins/check_md_raid';
+      check_command => '/usr/local/lib/nagios/plugins/check_md_raid';
   }
 
   file { '/usr/local/lib/nagios/plugins/check_md_raid':

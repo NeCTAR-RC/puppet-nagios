@@ -40,6 +40,7 @@ class nagios::nrpe {
       owner   => root,
       group   => root,
       mode    => '0755',
+      require => File['/usr/local/lib/nagios/'],
       tag     => 'nrpe';
   }
 }

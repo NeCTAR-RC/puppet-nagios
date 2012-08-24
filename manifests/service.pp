@@ -10,6 +10,7 @@ define nagios::service (
   $notification_period = '',
   $notification_options = '',
   $contact_groups = '',
+  $servicegroups = '',
   $use = 'generic-service',
   $service_description = 'absent' )
 {
@@ -61,5 +62,9 @@ define nagios::service (
 
   if ($contact_groups != '') {
     Nagios_service[$real_name] { contact_groups => $contact_groups }
+  }
+
+  if ($servicegroups != '') {
+    Nagios_service[$real_name] { servicegroups => $servicegroups }
   }
 }

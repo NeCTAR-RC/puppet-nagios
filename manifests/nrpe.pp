@@ -72,6 +72,7 @@ define nagios::nrpe::service (
   $notification_period = '',
   $notification_options = '',
   $contact_groups = '',
+  $servicegroups = '',
   $use = 'generic-service',
   $service_description = 'absent'
   ) {
@@ -93,5 +94,6 @@ define nagios::nrpe::service (
       contact_groups        => $contact_groups,
       use                   => $use,
       service_description   => $service_description,
+      servicegroups         => $servicegroups,
   }
 }

@@ -34,20 +34,32 @@ class nagios::server {
       notify  => Service['nagios3'];
   }
 
-  Nagios_command <<||>>
-  Nagios_contactgroup <<||>>
-  Nagios_contact <<||>>
-  Nagios_hostdependency <<||>>
-  Nagios_hostescalation <<||>>
-  Nagios_hostextinfo <<||>>
-  Nagios_hostgroup <<||>>
-  Nagios_host <<||>>
-  Nagios_servicedependency <<||>>
-  Nagios_serviceescalation <<||>>
-  Nagios_servicegroup <<||>>
-  Nagios_serviceextinfo <<||>>
-  Nagios_service <<||>>
-  Nagios_timeperiod <<||>>
+  nagios_servicegroup {
+    "openstack-endpoints":
+      tag => $environment,
+      alias => "The user facing endpoints.";
+    "message-queues":
+      tag => $environment,
+      alias => "RabbitMQ and other queues.";
+    "databases":
+      tag => $environment,
+      alias => "Database Servers.";
+  }
+
+  Nagios_command <<| tag == $environment |>>
+  Nagios_contactgroup <<| tag == $environment |>>
+  Nagios_contact <<| tag == $environment |>>
+  Nagios_hostdependency <<| tag == $environment |>>
+  Nagios_hostescalation <<| tag == $environment |>>
+  Nagios_hostextinfo <<| tag == $environment |>>
+  Nagios_hostgroup <<| tag == $environment |>>
+  Nagios_host <<| tag == $environment |>>
+  Nagios_servicedependency <<| tag == $environment |>>
+  Nagios_serviceescalation <<| tag == $environment |>>
+  Nagios_servicegroup <<| tag == $environment |>>
+  Nagios_serviceextinfo <<| tag == $environment |>>
+  Nagios_service <<| tag == $environment |>>
+  Nagios_timeperiod <<| tag == $environment |>>
 
   resources {
     [ 'nagios_command',

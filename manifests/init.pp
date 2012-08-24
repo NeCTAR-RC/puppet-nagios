@@ -10,7 +10,7 @@ class nagios {
 
   user {'nagios':
     ensure     => present,
-    gid        => 'users',
+    gid        => 'users', # Should be nagios
     groups     => ['users', 'puppet'],
     shell      => '/bin/bash',
     home       => '/home/nagios',

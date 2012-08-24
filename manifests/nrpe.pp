@@ -62,7 +62,19 @@ define nagios::nrpe::command ($check_command) {
 
 }
 
-define nagios::nrpe::service ($check_command) {
+define nagios::nrpe::service (
+  $check_command,
+  $check_period = '',
+  $normal_check_interval = '',
+  $retry_check_interval = '',
+  $max_check_attempts = '',
+  $notification_interval = '',
+  $notification_period = '',
+  $notification_options = '',
+  $contact_groups = '',
+  $use = 'generic-service',
+  $service_description = 'absent'
+  ) {
   nagios::nrpe::command {
     $name:
       check_command => $check_command;
@@ -70,6 +82,16 @@ define nagios::nrpe::service ($check_command) {
 
   nagios::service {
     $name:
-      check_command => "check_nrpe_1arg!${name}"
+      check_command         => "check_nrpe_1arg!${name}",
+      check_period          => $check_period,
+      normal_check_interval => $normal_check_interval,
+      retry_check_interval  => $retry_check_interval,
+      max_check_attempts    => $max_check_attempts,
+      notification_interval => $notification_interval,
+      notification_period   => $notification_period,
+      notification_options  => $notification_options,
+      contact_groups        => $contact_groups,
+      use                   => $use,
+      service_description   => $service_description,
   }
 }

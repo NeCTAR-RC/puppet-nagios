@@ -6,7 +6,7 @@
 
 class nagios::target (
   $parents = 'absent',
-  $address = $::ipaddress,
+  $address = $::ipaddress_public,
   $nagios_alias = $::hostname,
   $hostgroups = 'absent'
 ){

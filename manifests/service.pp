@@ -17,7 +17,7 @@ define nagios::service (
 
   # TODO: this resource should normally accept all nagios_host parameters
 
-  $real_name = "${::hostname}_${name}"
+  $real_name = "${::fqdn}_${name}"
 
   @@nagios_service { $real_name:
     ensure              => $ensure,

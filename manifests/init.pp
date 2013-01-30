@@ -64,7 +64,6 @@ class nagios {
     require => Package['nagios-plugins-basic'],
   }
 
-
   if $virtual == "physical" {
     file { '/usr/lib/nagios/plugins/check_ipmi_sensor.pl':
       ensure  => file,

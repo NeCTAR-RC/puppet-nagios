@@ -10,50 +10,32 @@ class nagios {
 
   user {'nagios':
     ensure     => present,
-    gid        => 'users', # Should be nagios
+    gid        => nagios,
     groups     => ['users', 'puppet'],
-    shell      => '/bin/bash',
-    home       => '/home/nagios',
-    managehome => true,
+    shell      => '/bin/false',
+    home       => '/var/lib/nagios',
   }
-
+  file {'/home/nagios':
+    ensure => absent,
+  }
+  
   file {'/home/nagios/.ssh':
-    ensure  => directory,
-    owner   => nagios,
-    mode    => '0600',
-    require => User['nagios'],
+    ensure  => absent,
   }
 
   file {'/home/nagios/.ssh/authorized_keys':
-    ensure  => file,
-    owner   => nagios,
-    mode    => '0600',
-    source  => 'puppet:///modules/nagios/nagios_authorized_keys',
-    require => File['/home/nagios/.ssh'],
+    ensure  => absent,
   }
 
   file {'/home/nagios/libexec':
-    ensure  => symlink,
-    target  => '/usr/lib/nagios/plugins',
-    require => [User['nagios'],
-                Package['nagios-plugins-basic']],
+    ensure  => absent,
   }
 
   file { '/usr/lib/nagios/plugins/check_md_raid':
-    ensure  => file,
-    owner   => root,
-    group   => root,
-    mode    => '0755',
-    source  => 'puppet:///modules/nagios/check_md_raid',
-    require => Package['nagios-plugins-basic'],
+    ensure => absent,
   }
   file { '/usr/lib/nagios/plugins/check_memcached.py':
-    ensure  => file,
-    owner   => root,
-    group   => root,
-    mode    => '0755',
-    source  => 'puppet:///modules/nagios/check_memcached.py',
-    require => Package['nagios-plugins-basic'],
+    ensure  => absent,
   }
 
   file { '/etc/sudoers.d/sudoers_nagios':

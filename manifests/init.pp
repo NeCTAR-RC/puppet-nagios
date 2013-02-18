@@ -15,25 +15,16 @@ class nagios {
     shell      => '/bin/false',
     home       => '/var/lib/nagios',
   }
+
   file {'/home/nagios':
     ensure => absent,
-  }
-  
-  file {'/home/nagios/.ssh':
-    ensure  => absent,
-  }
-
-  file {'/home/nagios/.ssh/authorized_keys':
-    ensure  => absent,
-  }
-
-  file {'/home/nagios/libexec':
-    ensure  => absent,
+    force  => true,
   }
 
   file { '/usr/lib/nagios/plugins/check_md_raid':
     ensure => absent,
   }
+
   file { '/usr/lib/nagios/plugins/check_memcached.py':
     ensure  => absent,
   }
@@ -59,8 +50,7 @@ class nagios {
 
 }
 
-define nagios::command ($check_command)
-{
+define nagios::command ($check_command) {
   file { "/etc/nagios3/conf.d/${name}.cfg":
     mode    => '0644',
     owner   => 'root',

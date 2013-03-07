@@ -8,12 +8,17 @@ class nagios {
     ensure => present,
   }
 
+  group { 'nagios':
+    ensure => present,
+  }
+
   user {'nagios':
     ensure     => present,
     gid        => nagios,
     groups     => ['users', 'puppet'],
     shell      => '/bin/false',
     home       => '/var/lib/nagios',
+    require    => Group['nagios'],
   }
 
   file {'/home/nagios':

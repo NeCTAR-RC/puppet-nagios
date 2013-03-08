@@ -12,10 +12,15 @@ class nagios::nrpe {
       tag    => 'nrpe';
   }
 
+  user { 'nagios':
+    groups  => ['users', 'puppet'],
+    require => Package['nagios-nrpe-server'],
+  }
+
   @service { 'nagios-nrpe-server':
-    ensure   => running,
-    require  => Package['nagios-nrpe-server'],
-    tag      => 'nrpe',
+    ensure  => running,
+    require => Package['nagios-nrpe-server'],
+    tag     => 'nrpe',
   }
 
   @file { '/etc/nagios/nrpe.cfg':

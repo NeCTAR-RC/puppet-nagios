@@ -16,19 +16,6 @@ class nagios {
     home       => '/var/lib/nagios',
   }
 
-  file {'/home/nagios':
-    ensure => absent,
-    force  => true,
-  }
-
-  file { '/usr/lib/nagios/plugins/check_md_raid':
-    ensure => absent,
-  }
-
-  file { '/usr/lib/nagios/plugins/check_memcached.py':
-    ensure  => absent,
-  }
-
   file { '/etc/sudoers.d/sudoers_nagios':
     owner   => 'root',
     group   => 'root',

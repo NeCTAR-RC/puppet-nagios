@@ -19,6 +19,10 @@ class nagios::server {
     notify  => Service['nagios3'],
   }
 
+  file {'/etc/nagios3/extra.d':
+    ensure => directory,
+  }
+  
   exec {
     'nagios_exec_fix':
       command => 'dpkg-statoverride --update --add nagios www-data 2710 /var/lib/nagios3/rw',

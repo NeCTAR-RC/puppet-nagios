@@ -33,6 +33,13 @@ class nagios::nrpe {
     tag     => 'nrpe',
   }
 
+  file{'/etc/nagios-plugins/config/check_nrpe.cfg':
+    owner  => root,
+    group  => root,
+    mode   => '0755',
+    source => 'puppet:///modules/nagios/check_nrpe.cfg',
+  }
+
   @file {
     '/usr/local/lib/nagios/':
       ensure  => directory,
@@ -79,7 +86,8 @@ define nagios::nrpe::service (
   $contact_groups = '',
   $servicegroups = '',
   $use = 'generic-service',
-  $service_description = 'absent'
+  $service_description = 'absent',
+  $nrpe_command = 'check_nrpe_1arg',
   ) {
   nagios::nrpe::command {
     $name:
@@ -88,7 +96,7 @@ define nagios::nrpe::service (
 
   nagios::service {
     $name:
-      check_command         => "check_nrpe_1arg!${name}",
+      check_command         => "${nrpe_command}!${name}",
       check_period          => $check_period,
       normal_check_interval => $normal_check_interval,
       retry_check_interval  => $retry_check_interval,

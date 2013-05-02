@@ -1,15 +1,17 @@
 class nagios::server {
 
-  package {'nagios3':
+  $nagios_pkgs = [ 'nagios3', 'nagios-images']
+
+  package { $nagios_pkgs:
     ensure => present,
     notify => Exec['nagios_exec_fix', 'nagios_exec_fix1'],
   }
 
-  service {'nagios3':
+  service { 'nagios3':
     ensure => running,
   }
 
-  file {'/etc/nagios3/nagios.cfg':
+  file { '/etc/nagios3/nagios.cfg':
     ensure  => file,
     owner   => root,
     group   => root,
@@ -19,10 +21,10 @@ class nagios::server {
     notify  => Service['nagios3'],
   }
 
-  file {'/etc/nagios3/extra.d':
+  file { '/etc/nagios3/extra.d':
     ensure => directory,
   }
-  
+
   exec {
     'nagios_exec_fix':
       command => 'dpkg-statoverride --update --add nagios www-data 2710 /var/lib/nagios3/rw',

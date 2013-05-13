@@ -33,11 +33,21 @@ class nagios::nrpe {
     tag     => 'nrpe',
   }
 
-  file{'/etc/nagios-plugins/config/check_nrpe.cfg':
-    owner  => root,
-    group  => root,
-    mode   => '0755',
-    source => 'puppet:///modules/nagios/check_nrpe.cfg',
+  $plugin_dirs = ['/etc/nagios-plugins', '/etc/nagios-plugins/config']
+
+  file { $plugin_dirs:
+    ensure  => directory,
+    mode    => '0755',
+    owner   => 'root',
+    group   => 'root',
+  }
+
+  file{ '/etc/nagios-plugins/config/check_nrpe.cfg':
+    owner   => root,
+    group   => root,
+    mode    => '0755',
+    source  => 'puppet:///modules/nagios/check_nrpe.cfg',
+    require => File[$plugin_dirs],
   }
 
   @file {

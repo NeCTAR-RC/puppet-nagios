@@ -1,5 +1,7 @@
 class nagios::nrpe {
 
+  $nagios_hosts = hiera('nagios::hosts', [])
+
   @package {
     'nagios-nrpe-server':
       ensure => present,

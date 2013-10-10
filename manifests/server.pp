@@ -4,11 +4,18 @@ class nagios::server {
 
   package { $nagios_pkgs:
     ensure => present,
-    notify => Exec['nagios_exec_fix', 'nagios_exec_fix1'],
+    notify => Exec['nagios_exec_fix1', 'nagios_exec_fix2'],
   }
 
   service { 'nagios3':
     ensure => running,
+  }
+
+  exec { 'fix_nagios_perms':
+    command      => '/usr/bin/find /etc/nagios3/*.d -type f ! -perm -o+r -exec /bin/chmod -R 0644 {} \;',
+    notify       => Service['nagios3'],
+    refreshonly  => 'true',
+    onlyif       => '/usr/bin/find /etc/nagios3/*.d ! -perm -o+r',
   }
 
   file { '/etc/nagios3/nagios.cfg':
@@ -21,18 +28,37 @@ class nagios::server {
     notify  => Service['nagios3'],
   }
 
+  $nagios_conf_dirs = ['/etc/nagios3/conf.d', '/etc/nagios3/hosts.d', '/etc/nagios3/services.d']
+
+  file { $nagios_conf_dirs:
+    ensure  => directory,
+    purge   => true,
+    recurse => true,
+    force   => true,
+    owner   => root,
+    group   => nagios,
+    mode    => '0750',
+    require => Package['nagios3'],
+    notify  => Service['nagios3'],
+  }
+
   file { '/etc/nagios3/extra.d':
-    ensure => directory,
+    ensure  => directory,
+    owner   => root,
+    group   => nagios,
+    mode    => '0750',
+    require => Package['nagios3'],
+    notify  => Service['nagios3'],
   }
 
   exec {
-    'nagios_exec_fix':
+    'nagios_exec_fix1':
       command => 'dpkg-statoverride --update --add nagios www-data 2710 /var/lib/nagios3/rw',
       unless  => 'dpkg-statoverride --list /var/lib/nagios3/rw',
       path    => '/usr/sbin/',
       require => Package['nagios3'],
       notify  => Service['nagios3'];
-    'nagios_exec_fix1':
+    'nagios_exec_fix2':
       command => 'dpkg-statoverride --update --add nagios nagios 751 /var/lib/nagios3',
       unless  => 'dpkg-statoverride --list /var/lib/nagios3',
       path    => '/usr/sbin/',
@@ -87,23 +113,22 @@ class nagios::server {
 
   Nagios_command <| tag == $environment |> {
     target  => '/etc/nagios3/conf.d/nagios_command.cfg',
-    require => File['nagios_confd'],
+    require => File[$nagios_conf_dirs],
     notify  => Service['nagios3'],
   }
   Nagios_contact <| tag == $environment |> {
     target  => '/etc/nagios3/conf.d/nagios_contact.cfg',
-    require => File['nagios_confd'],
+    require => File[$nagios_conf_dirs],
     notify  => Service['nagios3'],
   }
   Nagios_contactgroup <| tag == $environment |> {
     target  => '/etc/nagios3/conf.d/nagios_contactgroup.cfg',
-    require => File['nagios_confd'],
+    require => File[$nagios_conf_dirs],
     notify  => Service['nagios3'],
   }
   Nagios_host <| tag == $environment |> {
-    target  => '/etc/nagios3/conf.d/nagios_host.cfg',
-    require => File['nagios_confd'],
-    notify  => Service['nagios3'],
+    require => File[$nagios_conf_dirs],
+    notify  => [Service['nagios3'], Exec['fix_nagios_perms']],
   }
   Nagios_hostdependency <| tag == $environment |> {
     target => '/etc/nagios3/conf.d/nagios_hostdependency.cfg',
@@ -115,42 +140,41 @@ class nagios::server {
   }
   Nagios_hostextinfo <| tag == $environment |> {
     target  => '/etc/nagios3/conf.d/nagios_hostextinfo.cfg',
-    require => File['nagios_confd'],
+    require => File[$nagios_conf_dirs],
     notify  => Service['nagios3'],
   }
   Nagios_hostgroup <| tag == $environment |> {
     target  => '/etc/nagios3/conf.d/nagios_hostgroup.cfg',
-    require => File['nagios_confd'],
+    require => File[$nagios_conf_dirs],
     notify  => Service['nagios3'],
   }
   Nagios_service <| tag == $environment |> {
-    target  => '/etc/nagios3/conf.d/nagios_service.cfg',
-    require => File['nagios_confd'],
-    notify  => Service['nagios3'],
+    require => File[$nagios_conf_dirs],
+    notify  => [Service['nagios3'], Exec['fix_nagios_perms']],
   }
   Nagios_servicegroup <| tag == $environment |> {
     target  => '/etc/nagios3/conf.d/nagios_servicegroup.cfg',
-    require => File['nagios_confd'],
+    require => File[$nagios_conf_dirs],
     notify  => Service['nagios3'],
   }
   Nagios_servicedependency <| tag == $environment |> {
     target  => '/etc/nagios3/conf.d/nagios_servicedependency.cfg',
-    require => File['nagios_confd'],
+    require => File[$nagios_conf_dirs],
     notify  => Service['nagios3'],
   }
   Nagios_serviceescalation <| tag == $environment |> {
     target  => '/etc/nagios3/conf.d/nagios_serviceescalation.cfg',
-    require => File['nagios_confd'],
+    require => File[$nagios_conf_dirs],
     notify  => Service['nagios3'],
   }
   Nagios_serviceextinfo <| tag == $environment |> {
     target  => '/etc/nagios3/conf.d/nagios_serviceextinfo.cfg',
-    require => File['nagios_confd'],
+    require => File[$nagios_conf_dirs],
     notify  => Service['nagios3'],
   }
   Nagios_timeperiod <| tag == $environment |> {
     target  => '/etc/nagios3/conf.d/nagios_timeperiod.cfg',
-    require => File['nagios_confd'],
+    require => File[$nagios_conf_dirs],
     notify  => Service['nagios3'],
   }
 
@@ -175,18 +199,6 @@ class nagios::server {
             mode    => '0644',
             owner   => root,
             group   => 0;
-  }
-
-  file { 'nagios_confd':
-    ensure  => directory,
-    path    => '/etc/nagios3/conf.d/',
-    purge   => true,
-    recurse => true,
-    force   => true,
-    notify  => Service['nagios3'],
-    mode    => '0750',
-    owner   => root,
-    group   => nagios;
   }
 
   nagios_command {

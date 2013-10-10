@@ -26,6 +26,7 @@ define nagios::service (
     use                 => $use,
     notify              => Service['nagios3'],
     tag                 => $environment,
+    target              => "/etc/nagios3/services.d/${fqdn}_service.cfg",
     service_description => $service_description ?{
       'absent'          => $name,
       default           => $service_description

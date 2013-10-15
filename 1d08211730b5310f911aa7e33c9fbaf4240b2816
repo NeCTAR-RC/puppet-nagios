@@ -1,0 +1,8 @@
+Change-Id: I1d08211730b5310f911aa7e33c9fbaf4240b2816
+Code-Review+2: Russell Sim <russell.sim@gmail.com>
+Verified+1: Russell Sim <russell.sim@gmail.com>
+Submitted-by: Russell Sim <russell.sim@gmail.com>
+Submitted-at: Tue, 15 Oct 2013 12:00:38 +1100
+Reviewed-on: https://review.rc.nectar.org.au/868
+Project: NeCTAR-RC/puppet-nagios
+Branch: refs/meta/config

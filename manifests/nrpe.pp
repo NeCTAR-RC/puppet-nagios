@@ -12,6 +12,9 @@ class nagios::nrpe {
     'nagios-plugins':
       ensure => present,
       tag    => 'nrpe';
+    'nagios-plugins-contrib':
+      ensure => present,
+      tag    => 'nrpe';
   }
 
   user { 'nagios':

@@ -48,7 +48,9 @@ class nagios::checks::netapp {
   }
 
   $host = hiera('netapp::host')
-  nagios::checks::netapp::host { $host: }
+  nagios::checks::netapp::host { $host:
+    require => Nagios::Command['check_netapp_ontapi'],
+  }
 }
 
 define nagios::checks::netapp::host {

@@ -48,7 +48,19 @@ class nagios::checks::netapp {
   }
 
   $host = hiera('netapp::host')
-  nagios::checks::netapp::host { $host: }
+
+  @nagios_host { $host:
+    use     => 'generic-host',
+    target  => '/etc/nagios3/conf.d/nagios_host.cfg',
+    require => File['nagios_confd'],
+    notify  => Service['nagios3'],
+  }
+
+  realize Nagios_host[$host]
+
+  nagios::checks::netapp::host { $host:
+    require => Nagios::Command['check_netapp_ontapi'],
+  }
 }
 
 define nagios::checks::netapp::host {
@@ -57,24 +69,38 @@ define nagios::checks::netapp::host {
   $password = hiera('netapp::password')
 
   nagios::service { "${name}_aggregate":
-    check_command => "check_netapp_ontapi!$name!$user!$password!aggregate_health"
+    host_name           => $name,
+    check_command       => "check_netapp_ontapi!$name!$user!$password!aggregate_health",
+    service_description => 'aggregate_health',
   }
   nagios::service { "${name}_snapmirror":
-    check_command => "check_netapp_ontapi!$name!$user!$password!snapmirror_health"
+    host_name           => $name,
+    check_command       => "check_netapp_ontapi!$name!$user!$password!snapmirror_health",
+    service_description => 'snapmirror_health',
   }
   nagios::service { "${name}_filer_hardware":
-    check_command => "check_netapp_ontapi!$name!$user!$password!filer_hardware_health"
+    host_name           => $name,
+    check_command       => "check_netapp_ontapi!$name!$user!$password!filer_hardware_health",
+    service_description => 'filer_hardware_health',
   }
   nagios::service { "${name}_interface":
-    check_command => "check_netapp_ontapi!$name!$user!$password!interface_health"
+    host_name           => $name,
+    check_command       => "check_netapp_ontapi!$name!$user!$password!interface_health",
+    service_description => 'interface_health',
   }
   nagios::service { "${name}_alarms":
-    check_command => "check_netapp_ontapi!$name!$user!$password!netapp_alarms"
+    host_name           => $name,
+    check_command       => "check_netapp_ontapi!$name!$user!$password!netapp_alarms",
+    service_description => 'netapp_alarms',
   }
   nagios::service { "${name}_cluster":
-    check_command => "check_netapp_ontapi!$name!$user!$password!cluster_health"
+    host_name           => $name,
+    check_command       => "check_netapp_ontapi!$name!$user!$password!cluster_health",
+    service_description => 'cluster_health',
   }
   nagios::service { "${name}_disk":
-    check_command => "check_netapp_ontapi!$name!$user!$password!disk_health"
+    host_name           => $name,
+    check_command       => "check_netapp_ontapi!$name!$user!$password!disk_health",
+    service_description => 'disk_health',
   }
 }

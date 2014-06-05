@@ -29,13 +29,13 @@ class nagios::server {
     'nagios_exec_fix':
       command => 'dpkg-statoverride --update --add nagios www-data 2710 /var/lib/nagios3/rw',
       unless  => 'dpkg-statoverride --list /var/lib/nagios3/rw',
-      path    => '/usr/sbin/',
+      path    => ['/usr/bin/', '/usr/sbin/'],
       require => Package['nagios3'],
       notify  => Service['nagios3'];
     'nagios_exec_fix1':
       command => 'dpkg-statoverride --update --add nagios nagios 751 /var/lib/nagios3',
       unless  => 'dpkg-statoverride --list /var/lib/nagios3',
-      path    => '/usr/sbin/',
+      path    => ['/usr/bin/', '/usr/sbin/'],
       require => Package['nagios3'],
       notify  => Service['nagios3'];
   }

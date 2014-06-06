@@ -100,10 +100,16 @@ define nagios::nrpe::service (
   $notification_options = '',
   $contact_groups = '',
   $servicegroups = '',
-  $use = 'generic-service',
+  $use = undef,
   $service_description = 'absent',
   $nrpe_command = 'check_nrpe_1arg',
   ) {
+
+  if ($use == undef) {
+    $service_use = hiera('nagios::service::use')
+  } else {
+    $service_use = 'generic-service'
+  }
 
   # Only add NRPE checks if this host is using NRPE
   if defined(Service['nagios-nrpe-server']) {

@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAT3//9CE\u003d",
+        "filename": "manifests/nrpe.pp",
+        "patchSetId": 2
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1000085
+      },
+      "writtenOn": "2014-06-06T06:29:55Z",
+      "side": 1,
+      "message": "Don\u0027t even need hiera() function. Puppet will look in hiera first anyway. If it doesn\u0027t find anything will use the default defined here.",
+      "revId": "cfb088d6ee6074b81cff45e8e84640404139972b",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": false
+    }
+  ]
+}

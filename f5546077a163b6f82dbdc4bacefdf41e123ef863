@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAT3//9DE\u003d",
+        "filename": "manifests/host.pp",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2014-06-06T06:17:07Z",
+      "side": 1,
+      "message": "Can\u0027t this just be a class argument like the rest, also can it have a default?",
+      "revId": "f5546077a163b6f82dbdc4bacefdf41e123ef863",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAT3//9DA\u003d",
+        "filename": "manifests/nrpe.pp",
+        "patchSetId": 1
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2014-06-06T06:17:07Z",
+      "side": 1,
+      "message": "Couldn\u0027t this be\n\n$use \u003d hiera(\u0027nagios::service::use\u0027, \u0027generic-service\u0027)",
+      "revId": "f5546077a163b6f82dbdc4bacefdf41e123ef863",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAT3//9C8\u003d",
+        "filename": "manifests/nrpe.pp",
+        "patchSetId": 1
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2014-06-06T06:17:07Z",
+      "side": 1,
+      "message": "Variable name is changed here, should it be changed elsewhere too?",
+      "revId": "f5546077a163b6f82dbdc4bacefdf41e123ef863",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": false
+    }
+  ]
+}

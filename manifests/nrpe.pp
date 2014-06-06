@@ -100,7 +100,7 @@ define nagios::nrpe::service (
   $notification_options = '',
   $contact_groups = '',
   $servicegroups = '',
-  $use = 'generic-service',
+  $use = hiera('nagios::service::use'),
   $service_description = 'absent',
   $nrpe_command = 'check_nrpe_1arg',
   ) {

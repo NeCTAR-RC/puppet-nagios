@@ -34,6 +34,24 @@
       "revId": "cfb088d6ee6074b81cff45e8e84640404139972b",
       "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAT3//8+c\u003d",
+        "filename": "manifests/nrpe.pp",
+        "patchSetId": 2
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1000085
+      },
+      "writtenOn": "2014-06-12T04:43:09Z",
+      "side": 1,
+      "message": "Define is kind of a class.. :) I\u0027ll give it a test..",
+      "parentUuid": "AAAAT3//8+k\u003d",
+      "revId": "cfb088d6ee6074b81cff45e8e84640404139972b",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": false
     }
   ]
 }

@@ -16,6 +16,24 @@
       "revId": "cfb088d6ee6074b81cff45e8e84640404139972b",
       "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAT3//8+k\u003d",
+        "filename": "manifests/nrpe.pp",
+        "patchSetId": 2
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2014-06-12T04:36:25Z",
+      "side": 1,
+      "message": "But this is define not a class. Don\u0027t think it works for defines?",
+      "parentUuid": "AAAAT3//9CE\u003d",
+      "revId": "cfb088d6ee6074b81cff45e8e84640404139972b",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": false
     }
   ]
 }

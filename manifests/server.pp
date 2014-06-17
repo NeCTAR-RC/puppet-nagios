@@ -184,17 +184,15 @@ class nagios::server {
     recurse => true,
     force   => true,
     notify  => Service['nagios3'],
-    mode    => '0750',
+    mode    => '0644',
     owner   => root,
     group   => nagios;
   }
 
-  nagios_command {
+  nagios::command {
     'http_port':
-      tag          => $environment,
       command_line => '$USER1$/check_http -p $ARG1$ -H $HOSTADDRESS$ -I $HOSTADDRESS$';
     'https_port':
-      tag          => $environment,
       command_line => '$USER1$/check_http --ssl -p $ARG1$ -H $HOSTADDRESS$ -I $HOSTADDRESS$';
   }
 }

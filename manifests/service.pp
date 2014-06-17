@@ -11,7 +11,7 @@ define nagios::service (
   $notification_options = '',
   $contact_groups = '',
   $servicegroups = '',
-  $use = 'generic-service',
+  $use = hiera('nagios::service::use'),
   $service_description = 'absent' )
 {
 
@@ -26,6 +26,7 @@ define nagios::service (
     use                 => $use,
     notify              => Service['nagios3'],
     tag                 => $environment,
+    mode                => '0644',
     service_description => $service_description ?{
       'absent'          => $name,
       default           => $service_description

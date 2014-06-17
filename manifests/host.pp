@@ -11,6 +11,7 @@ class nagios::host (
     tag     => $::environment,
     address => $address,
     alias   => $nagios_alias,
+    mode    => '0644',
     use     => $use,
   }
 

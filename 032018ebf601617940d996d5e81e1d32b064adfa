@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAT3//84Y\u003d",
+        "filename": "manifests/command.pp",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2014-06-17T22:55:34Z",
+      "side": 1,
+      "message": "$name should be up a line",
+      "revId": "032018ebf601617940d996d5e81e1d32b064adfa",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAT3//84U\u003d",
+        "filename": "manifests/contact.pp",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2014-06-17T22:55:34Z",
+      "side": 1,
+      "message": "same",
+      "revId": "032018ebf601617940d996d5e81e1d32b064adfa",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": false
+    }
+  ]
+}

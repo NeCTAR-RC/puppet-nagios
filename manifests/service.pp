@@ -11,7 +11,7 @@ define nagios::service (
   $notification_options = '',
   $contact_groups = '',
   $servicegroups = '',
-  $use = hiera('nagios::service::use'),
+  $use = hiera('nagios::service::use', 'generic-service'),
   $service_description = 'absent' )
 {
 

@@ -4,7 +4,7 @@ class nagios::host (
   $nagios_alias = $::fqdn,
   $hostgroups = 'absent',
   $parents = 'absent',
-  $use,
+  $use = 'generic-host',
 ){
 
   @@nagios_host { $::fqdn:

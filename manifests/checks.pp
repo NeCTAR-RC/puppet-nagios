@@ -50,7 +50,7 @@ class nagios::checks::netapp {
   $host = hiera('netapp::host')
 
   @nagios_host { $host:
-    use     => hiera('nagios::host::use'),
+    use     => hiera('nagios::host::use', 'generic-host'),
     target  => '/etc/nagios3/conf.d/nagios_host.cfg',
     require => File['nagios_confd'],
     notify  => Service['nagios3'],

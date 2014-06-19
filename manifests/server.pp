@@ -86,7 +86,6 @@ class nagios::server {
   }
 
   Nagios_command <| tag == $environment |> {
-    target  => '/etc/nagios3/conf.d/nagios_command.cfg',
     require => File['nagios_confd'],
     notify  => Service['nagios3'],
   }
@@ -154,8 +153,7 @@ class nagios::server {
     notify  => Service['nagios3'],
   }
 
-  file { ['/etc/nagios3/conf.d/nagios_command.cfg',
-          '/etc/nagios3/conf.d/nagios_contact.cfg',
+  file { ['/etc/nagios3/conf.d/nagios_contact.cfg',
           '/etc/nagios3/conf.d/nagios_contactgroup.cfg',
           '/etc/nagios3/conf.d/nagios_host.cfg',
           '/etc/nagios3/conf.d/nagios_hostdependency.cfg',
@@ -175,6 +173,10 @@ class nagios::server {
             mode    => '0644',
             owner   => root,
             group   => 0;
+  }
+
+  file { '/etc/nagios3/conf.d/nagios_command.cfg':
+    ensure  => absent,
   }
 
   file { 'nagios_confd':

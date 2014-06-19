@@ -17,6 +17,7 @@ define nagios::command (
     $name:
       tag          => $environment,
       mode         => '0644',
+      target       => "/etc/nagios3/conf.d/$name.cfg",
       command_line => $command,
   }
 

@@ -72,6 +72,14 @@ class nagios::server_external (
       notify  => Service['nagios3'];
   }
 
+  file { 'nagios_confd':
+    ensure  => directory,
+    path    => '/etc/nagios3/conf.d/',
+    mode    => '0644',
+    owner   => root,
+    group   => nagios;
+  }
+
   nagios_servicegroup {
     "openstack-endpoints":
       tag => $environment,

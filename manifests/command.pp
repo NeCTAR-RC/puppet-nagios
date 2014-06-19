@@ -13,10 +13,9 @@ define nagios::command (
     }
   }
 
-
   @@nagios_command {
     $name:
-      tag          => $::environment,
+      tag          => $environment,
       mode         => '0644',
       command_line => $command,
   }

@@ -52,11 +52,10 @@ class nagios::checks::netapp {
   @nagios_host { $host:
     use     => hiera('nagios::host::use', 'generic-host'),
     target  => '/etc/nagios3/conf.d/nagios_host.cfg',
+    tag     => $environment,
     require => File['nagios_confd'],
     notify  => Service['nagios3'],
   }
-
-  realize Nagios_host[$host]
 
   nagios::checks::netapp::host { $host:
     require => Nagios::Command['check_netapp_ontapi'],

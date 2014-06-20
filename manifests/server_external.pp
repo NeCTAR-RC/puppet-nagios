@@ -3,6 +3,8 @@ class nagios::server_external (
   $puppetdb_port,
   ){
 
+  $naginator = hiera('nagios::naginator', {})
+
   $nagios_pkgs = [ 'nagios3', 'nagios-images']
 
   package { $nagios_pkgs:

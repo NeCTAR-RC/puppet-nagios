@@ -4,5 +4,9 @@ environment=<%= @environment %>
 [query]
 tag=<%= @environment %>
 
-[hostgroup_operatingsystem]
-fact_template={operatingsystem}
+<% naginator.sort.map do |key, value| -%>
+[<%= key %>]
+<% value.sort.map do |key, value| -%>
+<%= key %>=<%= value %>
+<% end %>
+<% end -%>

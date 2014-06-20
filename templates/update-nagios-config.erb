@@ -29,7 +29,7 @@ EOF
 cleanup() {
     if [ $? -gt 0 ]
     then
-        echo $RESULT
+        echo "${RESULT}"
         echo "ERROR running update-nagios-config"
     fi
     rm -rf $TEMP_DIR

@@ -82,7 +82,7 @@ class nagios::server_external (
     group   => nagios;
   }
 
-  nagios_servicegroup {
+  @@nagios_servicegroup {
     "openstack-endpoints":
       tag => $environment,
       alias => "The user facing endpoints.";

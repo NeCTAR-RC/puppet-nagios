@@ -43,9 +43,8 @@ function generate {
     if ! diff -r $TEMP_DIR/ $OUTPUT_DIR > /dev/null
     then
         rsync --dirs --delete $TEMP_DIR/ $OUTPUT_DIR
+        RESULT=$(service nagios3 restart)
     fi
-
-    RESULT=$(service nagios3 restart)
 }
 
 while getopts ":d" opt; do

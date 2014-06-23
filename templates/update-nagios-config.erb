@@ -38,7 +38,8 @@ trap cleanup 0
 
 function generate {
     RESULT=$(external_naginator.py --host $PUPPETDB_HOST --port $PUPPETDB_PORT --output-dir $TEMP_DIR -c $CONFIG_FILE)
-    diff -uN /etc/nagios3/conf.d/auto_host.cfg $TEMP_DIR/auto_host.cfg  | egrep '^-' -C 2
+    DIFF=$(diff -uN /etc/nagios3/conf.d/auto_host.cfg $TEMP_DIR/auto_host.cfg  | egrep '^-' -C 2)
+    echo -n "${RESULT}"
     if ! diff -r $TEMP_DIR/ $OUTPUT_DIR > /dev/null
     then
         rsync --dirs --delete $TEMP_DIR/ $OUTPUT_DIR

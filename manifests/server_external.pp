@@ -51,7 +51,7 @@ class nagios::server_external (
     ensure  => present,
     command => '/usr/local/sbin/update-nagios-config -d',
     user    => 'root',
-    minute  => '*/10',
+    minute  => '0',
     environment => 'PATH=/bin:/usr/bin:/usr/sbin:/usr/local/bin/',
     require => File['/usr/local/sbin/update-nagios-config'],
   }

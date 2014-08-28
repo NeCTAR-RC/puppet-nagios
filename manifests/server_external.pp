@@ -1,6 +1,7 @@
 class nagios::server_external (
   $puppetdb_host,
-  $puppetdb_port,
+  $puppetdb_port=8081,
+  $use_ssl=true,
   ){
 
   $naginator = hiera('nagios::naginator', {})

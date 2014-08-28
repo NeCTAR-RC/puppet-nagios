@@ -1,5 +1,9 @@
 [puppet]
 environment=<%= @environment %>
+<%- if @use_ssl -%>
+ssl_cert=/var/lib/puppet/ssl/certs/<%= fqdn %>.pem
+ssl_key=/var/lib/puppet/ssl/private_keys/<%= fqdn %>.pem
+<%- end -%>
 
 [query]
 tag=<%= @environment %>

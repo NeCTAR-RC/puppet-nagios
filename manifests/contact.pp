@@ -19,7 +19,6 @@ define nagios::contact (
       tag                           => $::environment,
       alias                         => $name,
       email                         => $contact_email,
-      mode                          => '0644',
       host_notification_commands    => $host_notification_commands,
       host_notification_options     => $host_notification_options,
       host_notification_period      => $host_notification_period,

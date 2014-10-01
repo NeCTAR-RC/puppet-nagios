@@ -62,7 +62,7 @@ class nagios::server_external (
 
   exec {
     'nagios_exec_fix':
-      command => 'dpkg-statoverride --updaten --add nagios www-data 2710 /var/lib/nagios3/rw',
+      command => 'dpkg-statoverride --update --add nagios www-data 2710 /var/lib/nagios3/rw',
       unless  => 'dpkg-statoverride --list /var/lib/nagios3/rw',
       path    => ['/usr/bin/', '/usr/sbin/'],
       require => Package['nagios3'],

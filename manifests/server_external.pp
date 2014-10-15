@@ -18,6 +18,10 @@ class nagios::server_external (
   }
 
   package { ['python-externalnaginator']:
+    ensure => absent,
+  }
+
+  package { ['python-external-naginator']:
     ensure => present,
   }
 
@@ -40,20 +44,16 @@ class nagios::server_external (
   }
 
   file { '/usr/local/sbin/update-nagios-config':
-    ensure  => file,
-    owner   => root,
-    group   => root,
-    mode    => '0755',
-    content => template('nagios/update-nagios-config.erb'),
+    ensure  => absent,
   }
 
   cron { 'update-nagios-config':
     ensure  => present,
-    command => '/usr/local/sbin/update-nagios-config -d',
+    command => "/usr/bin/external-naginator --update -c /etc/nagios3/naginator.ini --output-dir /etc/nagios3/conf.d/ --host ${puppetdb_host} --port ${puppetdb_port}",
     user    => 'root',
     minute  => '0',
     environment => 'PATH=/bin:/usr/bin:/usr/sbin:/usr/local/bin/',
-    require => File['/usr/local/sbin/update-nagios-config'],
+    require => Package['python-external-naginator'],
   }
 
   file { '/etc/nagios3/extra.d':

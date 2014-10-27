@@ -4,6 +4,7 @@ environment=<%= @environment %>
 ssl_cert=/var/lib/puppet/ssl/certs/<%= fqdn %>.pem
 ssl_key=/var/lib/puppet/ssl/private_keys/<%= fqdn %>.pem
 <%- end -%>
+timeout=<%= @naginator_timeout %>
 
 [query]
 tag=<%= @environment %>

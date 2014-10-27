@@ -1,6 +1,7 @@
 class nagios::server_external (
   $puppetdb_host,
   $puppetdb_port=8081,
+  $naginator_timeout=60,
   $use_ssl=true,
   ){
 

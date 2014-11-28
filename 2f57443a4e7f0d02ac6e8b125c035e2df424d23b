@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1af78d9a_f119a023",
+        "filename": "manifests/nrpe.pp",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2014-11-28T05:47:42Z",
+      "side": 1,
+      "message": "not in line? or is it just the formatting in gerrit diff viewer",
+      "range": {
+        "startLine": 21,
+        "startChar": 3,
+        "endLine": 21,
+        "endChar": 42
+      },
+      "revId": "2f57443a4e7f0d02ac6e8b125c035e2df424d23b",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1af78d9a_31d3283a",
+        "filename": "manifests/nrpe.pp",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2014-11-28T05:47:42Z",
+      "side": 1,
+      "message": "ah I didn\u0027t see you\u0027re also using it for service name. Maybe the variable should be called nrpe, sorry!",
+      "range": {
+        "startLine": 47,
+        "startChar": 14,
+        "endLine": 47,
+        "endChar": 26
+      },
+      "revId": "2f57443a4e7f0d02ac6e8b125c035e2df424d23b",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1af78d9a_d11624f1",
+        "filename": "manifests/nrpe.pp",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2014-11-28T05:47:42Z",
+      "side": 1,
+      "message": "inconsistency here, as below you use the variable. I\u0027d say use the alias as done here as it\u0027s cleaner. Change the others",
+      "range": {
+        "startLine": 49,
+        "startChar": 23,
+        "endLine": 49,
+        "endChar": 43
+      },
+      "revId": "2f57443a4e7f0d02ac6e8b125c035e2df424d23b",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1af78d9a_11d8ac52",
+        "filename": "manifests/nrpe/service.pp",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2014-11-28T05:47:42Z",
+      "side": 1,
+      "message": "this can stay the same and ensure you have an alias for the service",
+      "range": {
+        "startLine": 20,
+        "startChar": 22,
+        "endLine": 20,
+        "endChar": 49
+      },
+      "revId": "2f57443a4e7f0d02ac6e8b125c035e2df424d23b",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": false
+    }
+  ]
+}

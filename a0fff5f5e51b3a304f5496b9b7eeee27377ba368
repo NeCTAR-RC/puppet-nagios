@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1af78d9a_5114f4f4",
+        "filename": "manifests/nrpe.pp",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2014-11-28T02:14:33Z",
+      "side": 1,
+      "message": "Minor nit. I feel like this variable should be called nrpe_package just to be super clear, same with the other 2.",
+      "range": {
+        "startLine": 6,
+        "startChar": 3,
+        "endLine": 6,
+        "endChar": 7
+      },
+      "revId": "a0fff5f5e51b3a304f5496b9b7eeee27377ba368",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": false
+    }
+  ]
+}

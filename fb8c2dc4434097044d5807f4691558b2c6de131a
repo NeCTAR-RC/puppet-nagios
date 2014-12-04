@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1af78d9a_943daabe",
+        "filename": "manifests/nrpe/command.pp",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2014-12-04T04:03:39Z",
+      "side": 1,
+      "message": "whitespace?",
+      "range": {
+        "startLine": 12,
+        "startChar": 44,
+        "endLine": 12,
+        "endChar": 45
+      },
+      "revId": "fb8c2dc4434097044d5807f4691558b2c6de131a",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1af78d9a_b440a636",
+        "filename": "manifests/nrpe/command.pp",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2014-12-04T04:03:39Z",
+      "side": 1,
+      "message": "whitespace?",
+      "range": {
+        "startLine": 13,
+        "startChar": 43,
+        "endLine": 13,
+        "endChar": 44
+      },
+      "revId": "fb8c2dc4434097044d5807f4691558b2c6de131a",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1af78d9a_f44a2e54",
+        "filename": "manifests/nrpe/service.pp",
+        "patchSetId": 4
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2014-12-04T04:03:39Z",
+      "side": 1,
+      "message": "whitespace?",
+      "range": {
+        "startLine": 19,
+        "startChar": 41,
+        "endLine": 19,
+        "endChar": 42
+      },
+      "revId": "fb8c2dc4434097044d5807f4691558b2c6de131a",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": false
+    }
+  ]
+}

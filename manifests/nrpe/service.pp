@@ -13,10 +13,11 @@ define nagios::nrpe::service (
   $use = hiera('nagios::service::use', 'generic-service'),
   $service_description = 'absent',
   $nrpe_command = 'check_nrpe_1arg',
-  ) {
+  )
+{
 
   # Only add NRPE checks if this host is using NRPE
-  if defined(Service['nagios-nrpe-server']) {
+  if defined(Service[$nagios::nrpe::nrpe]) {
     nagios::nrpe::command {
       $name:
         check_command => $check_command;

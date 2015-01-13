@@ -39,6 +39,15 @@ class nagios::nrpe {
       tag    => 'nrpe';
   }
 
+  if $::osfamily == 'RedHat' {
+    @file { '/usr/lib/nagios':
+      ensure  => link,
+      target  => '/usr/lib64/nagios',
+      require => Package['nagios-nrpe-server'],
+      tag     => 'nrpe',
+    }
+  }
+
   user { 'nagios':
     groups  => ['users', 'puppet'],
     require => Package['nagios-nrpe-server'],

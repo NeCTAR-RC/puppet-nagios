@@ -39,7 +39,7 @@ class nagios::nrpe {
       tag    => 'nrpe';
   }
 
-  if $::osfamily == 'RedHat' {
+  if ($::osfamily == 'RedHat') and ($::architecture == 'x86_64') {
     @file { '/usr/lib/nagios':
       ensure  => link,
       target  => '/usr/lib64/nagios',

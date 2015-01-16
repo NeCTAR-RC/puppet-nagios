@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fa2559ec_0aa07bf3",
+        "filename": "manifests/nrpe.pp",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2015-01-16T03:49:52Z",
+      "side": 1,
+      "message": "Isn\u0027t this amd64? at least on Ubuntu, also \n\nhardwareisa \u003d\u003e x86_64\nhardwaremodel \u003d\u003e x86_64",
+      "range": {
+        "startLine": 42,
+        "startChar": 56,
+        "endLine": 42,
+        "endChar": 62
+      },
+      "revId": "431631af8736955a35ade3d5e02f7dae45bd00e0",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": false
+    }
+  ]
+}

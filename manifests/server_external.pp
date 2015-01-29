@@ -18,10 +18,6 @@ class nagios::server_external (
     ensure => running,
   }
 
-  package { ['python-externalnaginator']:
-    ensure => absent,
-  }
-
   package { ['python-external-naginator']:
     ensure => present,
   }
@@ -44,17 +40,13 @@ class nagios::server_external (
     content => template('nagios/naginator.ini.erb'),
   }
 
-  file { '/usr/local/sbin/update-nagios-config':
-    ensure  => absent,
-  }
-
   cron { 'update-nagios-config':
-    ensure  => present,
-    command => "/usr/bin/external-naginator --update -c /etc/nagios3/naginator.ini --output-dir /etc/nagios3/conf.d/ --host ${puppetdb_host} --port ${puppetdb_port}",
-    user    => 'root',
-    minute  => '0',
+    ensure      => present,
+    command     => "/usr/bin/external-naginator --update -c /etc/nagios3/naginator.ini --output-dir /etc/nagios3/conf.d/ --host ${puppetdb_host} --port ${puppetdb_port}",
+    user        => 'root',
+    minute      => '0',
     environment => 'PATH=/bin:/usr/bin:/usr/sbin:/usr/local/bin/',
-    require => Package['python-external-naginator'],
+    require     => Package['python-external-naginator'],
   }
 
   file { '/etc/nagios3/extra.d':
@@ -86,13 +78,13 @@ class nagios::server_external (
 
   @@nagios_servicegroup {
     "openstack-endpoints":
-      tag => $environment,
+      tag   => $environment,
       alias => "The user facing endpoints.";
     "message-queues":
-      tag => $environment,
+      tag   => $environment,
       alias => "RabbitMQ and other queues.";
     "databases":
-      tag => $environment,
+      tag   => $environment,
       alias => "Database Servers.";
   }
 

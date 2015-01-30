@@ -29,7 +29,12 @@ cfg_dir=/etc/nagios3/conf.d
 # Put extra configs in here not managed by puppet
 cfg_dir=/etc/nagios3/extra.d
 
+<% if @extra_cfg_dirs -%>
+<% @extra_cfg_dirs.each do |dir| -%>
+cfg_dir=/etc/nagios3/<%= dir %>
+<% end -%>
 
+<% end -%>
 # OBJECT CONFIGURATION FILE(S)
 # These are the object configuration files in which you define hosts,
 # host groups, contacts, contact groups, services, etc.

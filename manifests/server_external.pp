@@ -3,6 +3,7 @@ class nagios::server_external (
   $puppetdb_port=8081,
   $naginator_timeout=60,
   $use_ssl=true,
+  $extra_cfg_dirs=false,
   ){
 
   $naginator = hiera('nagios::naginator', {})
@@ -31,7 +32,7 @@ class nagios::server_external (
     owner   => root,
     group   => root,
     mode    => '0644',
-    source  => 'puppet:///modules/nagios/nagios.cfg',
+    content => template('nagios/nagios.cfg.erb'),
     require => Package['nagios3'],
     notify  => Service['nagios3'],
   }
@@ -46,6 +47,16 @@ class nagios::server_external (
 
   file { '/usr/local/sbin/update-nagios-config':
     ensure  => absent,
+  }
+
+  if $extra_cfg_dirs {
+    $dirs = prefix($extra_cfg_dirs, '/etc/nagios3/')
+    file {[$dirs]:
+      ensure => directory,
+      owner  => root,
+      group  => root,
+      mode   => '0755',
+    }
   }
 
   cron { 'update-nagios-config':

@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fa2559ec_d35e1e12",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000084
+      },
+      "writtenOn": "2015-02-02T03:01:29Z",
+      "side": 1,
+      "message": "spelling.",
+      "range": {
+        "startLine": 10,
+        "startChar": 48,
+        "endLine": 10,
+        "endChar": 54
+      },
+      "revId": "028effbb8bd10bed0a096c600e3787b48c4af8be",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fa2559ec_b3ae0ae6",
+        "filename": "manifests/server_external.pp",
+        "patchSetId": 3
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000084
+      },
+      "writtenOn": "2015-02-02T03:01:29Z",
+      "side": 1,
+      "message": "this probably should be undef.  since its not defined.  does still work.  but i think that it gives the impression that true is an acceptable value.",
+      "range": {
+        "startLine": 6,
+        "startChar": 18,
+        "endLine": 6,
+        "endChar": 23
+      },
+      "revId": "028effbb8bd10bed0a096c600e3787b48c4af8be",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": false
+    }
+  ]
+}

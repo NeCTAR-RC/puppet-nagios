@@ -16,7 +16,7 @@ class nagios::server {
     owner   => root,
     group   => root,
     mode    => '0644',
-    source  => 'puppet:///modules/nagios/nagios.cfg',
+    content => template('nagios/nagios.cfg.erb'),
     require => Package['nagios3'],
     notify  => Service['nagios3'],
   }

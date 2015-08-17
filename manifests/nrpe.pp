@@ -71,7 +71,7 @@ class nagios::nrpe {
   }
 
   $plugin_dirs = ['/etc/nagios-plugins', '/etc/nagios-plugins/config',
-                  '/etc/nagios/nrpe.d',]
+                  '/etc/nagios', '/etc/nagios/nrpe.d',]
 
   file { $plugin_dirs:
     ensure  => directory,

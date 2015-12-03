@@ -34,6 +34,16 @@ class nagios::server_external (
     notify  => Service['nagios3'],
   }
 
+  file { '/etc/nagios3/commands.cfg':
+    ensure  => file,
+    owner   => root,
+    group   => root,
+    mode    => '0644',
+    content => template('nagios/commands.cfg.erb'),
+    require => Package['nagios3'],
+    notify  => Service['nagios3'],
+  }
+
   file { '/etc/nagios3/naginator.ini':
     ensure  => file,
     owner   => root,

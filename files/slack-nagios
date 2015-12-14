@@ -65,8 +65,9 @@ use LWP::UserAgent;
 
 my $domain;
 my $token;
+my $proxy;
 my %opt_fields;
-GetOptions("field=s%" => \%opt_fields, "domain=s" => \$domain, "token=s" => \$token);
+GetOptions("field=s%" => \%opt_fields, "domain=s" => \$domain, "token=s" => \$token, "proxy=s" => \$proxy);
 
 #
 # DO THINGS
@@ -92,6 +93,9 @@ $event{"slack_version"} = "1.1";
 
 my $ua = LWP::UserAgent->new;
 $ua->timeout(15);
+if (defined $proxy) {
+    $ua->proxy(['https'], $proxy);
+}
 
 my $req = POST("https://${domain}/services/hooks/nagios?token=${token}", \%event);
 

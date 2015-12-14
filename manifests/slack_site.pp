@@ -2,6 +2,8 @@
 # Nagios/Slack integration
 define nagios::slack_site {
 
+  include nagios::slack
+
   $slack_api_domain = hiera('slack_api_domain')
   $slack_api_token = hiera('slack_api_token')
 

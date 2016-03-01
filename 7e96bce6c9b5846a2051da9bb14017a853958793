@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bad4c104_75bc806d",
+        "filename": "files/check_nrpe.cfg",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2016-03-01T03:59:53Z",
+      "side": 1,
+      "message": "spelling :-)",
+      "range": {
+        "startLine": 31,
+        "startChar": 86,
+        "endLine": 31,
+        "endChar": 87
+      },
+      "revId": "7e96bce6c9b5846a2051da9bb14017a853958793",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": false
+    }
+  ]
+}

@@ -38,11 +38,11 @@ define nagios::service (
   }
 
   if ($normal_check_interval != '') {
-    Nagios_service[$real_name] { normal_check_interval => $normal_check_interval }
+    Nagios_service[$real_name] { check_interval => $normal_check_interval }
   }
 
   if ($retry_check_interval != '') {
-    Nagios_service[$real_name] { retry_check_interval => $retry_check_interval }
+    Nagios_service[$real_name] { retry_interval => $retry_check_interval }
   }
 
   if ($max_check_attempts != '') {

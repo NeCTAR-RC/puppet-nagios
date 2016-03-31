@@ -7,6 +7,8 @@ class nagios::server_external (
   $extra_cfg_dirs=undef,
   ){
 
+  include ::nagios::nrdp
+
   $naginator = hiera('nagios::naginator', {})
 
   $nagios_pkgs = [ 'nagios3', 'nagios-images']
@@ -72,9 +74,24 @@ class nagios::server_external (
       path    => ['/usr/bin/', '/usr/sbin/'],
       require => Package['nagios3'],
       notify  => Service['nagios3'];
+
     'nagios_exec_fix1':
       command => 'dpkg-statoverride --update --add nagios nagios 751 /var/lib/nagios3',
       unless  => 'dpkg-statoverride --list /var/lib/nagios3',
+      path    => ['/usr/bin/', '/usr/sbin/'],
+      require => Package['nagios3'],
+      notify  => Service['nagios3'];
+
+    'nagios_exec_fix_2':
+      command => 'dpkg-statoverride --update --add nagios www-data 770 /var/lib/nagios3/spool',
+      unless  => 'dpkg-statoverride --list /var/lib/nagios3/spool',
+      path    => ['/usr/bin/', '/usr/sbin/'],
+      require => Package['nagios3'],
+      notify  => Service['nagios3'];
+
+    'nagios_exec_fix_3':
+      command => 'dpkg-statoverride --update --add nagios www-data 770 /var/lib/nagios3/spool/checkresults',
+      unless  => 'dpkg-statoverride --list ',
       path    => ['/usr/bin/', '/usr/sbin/'],
       require => Package['nagios3'],
       notify  => Service['nagios3'];

@@ -1,4 +1,4 @@
-
+# Nagios external server
 class nagios::server_external (
   $puppetdb_host,
   $puppetdb_port=8081,
@@ -7,13 +7,16 @@ class nagios::server_external (
   $extra_cfg_dirs=undef,
   ){
 
+  include ::nagios::nrdp
+
   $naginator = hiera('nagios::naginator', {})
 
   $nagios_pkgs = [ 'nagios3', 'nagios-images']
 
   package { $nagios_pkgs:
     ensure => present,
-    notify => Exec['nagios_exec_fix', 'nagios_exec_fix1'],
+    notify => Exec[ 'nagios_exec_fix', 'nagios_exec_fix1',
+                    'nagios_exec_fix_2', 'nagios_exec_fix1_3'],
   }
 
   service { 'nagios3':
@@ -72,9 +75,24 @@ class nagios::server_external (
       path    => ['/usr/bin/', '/usr/sbin/'],
       require => Package['nagios3'],
       notify  => Service['nagios3'];
+
     'nagios_exec_fix1':
       command => 'dpkg-statoverride --update --add nagios nagios 751 /var/lib/nagios3',
       unless  => 'dpkg-statoverride --list /var/lib/nagios3',
+      path    => ['/usr/bin/', '/usr/sbin/'],
+      require => Package['nagios3'],
+      notify  => Service['nagios3'];
+
+    'nagios_exec_fix_2':
+      command => 'dpkg-statoverride --update --add nagios www-data 770 /var/lib/nagios3/spool',
+      unless  => 'dpkg-statoverride --list /var/lib/nagios3/spool',
+      path    => ['/usr/bin/', '/usr/sbin/'],
+      require => Package['nagios3'],
+      notify  => Service['nagios3'];
+
+    'nagios_exec_fix_3':
+      command => 'dpkg-statoverride --update --add nagios www-data 770 /var/lib/nagios3/spool/checkresults',
+      unless  => 'dpkg-statoverride --list /var/lib/nagios3/spool/checkresults',
       path    => ['/usr/bin/', '/usr/sbin/'],
       require => Package['nagios3'],
       notify  => Service['nagios3'];
@@ -89,15 +107,15 @@ class nagios::server_external (
   }
 
   @@nagios_servicegroup {
-    "openstack-endpoints":
+    'openstack-endpoints':
       tag   => $environment,
-      alias => "The user facing endpoints.";
-    "message-queues":
+      alias => 'The user facing endpoints.';
+    'message-queues':
       tag   => $environment,
-      alias => "RabbitMQ and other queues.";
-    "databases":
+      alias => 'RabbitMQ and other queues.';
+    'databases':
       tag   => $environment,
-      alias => "Database Servers.";
+      alias => 'Database Servers.';
   }
 
   nagios::command {

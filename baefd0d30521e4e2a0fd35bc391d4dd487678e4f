@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bad4c104_824e1ac0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000105
+      },
+      "writtenOn": "2016-04-04T06:16:37Z",
+      "side": 1,
+      "message": "I\u0027d prefer it if the commit message said why we are doing this.",
+      "revId": "baefd0d30521e4e2a0fd35bc391d4dd487678e4f",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bad4c104_2260ee31",
+        "filename": "manifests/server_external.pp",
+        "patchSetId": 2
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1000105
+      },
+      "writtenOn": "2016-04-04T06:16:37Z",
+      "side": 1,
+      "message": "Would it be better to use refreshonly \u003d\u003e true here, instead of the unless ? Or specify /var/lib/nagios3/spool/checkresults in the unless?",
+      "revId": "baefd0d30521e4e2a0fd35bc391d4dd487678e4f",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": false
+    }
+  ]
+}

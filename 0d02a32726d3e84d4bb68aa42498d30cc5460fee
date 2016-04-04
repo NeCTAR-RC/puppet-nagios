@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bad4c104_62511662",
+        "filename": "manifests/server_external.pp",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000105
+      },
+      "writtenOn": "2016-04-04T06:16:37Z",
+      "side": 0,
+      "message": "Do we want to make the other nagios exec fixes run here?",
+      "revId": "0d02a32726d3e84d4bb68aa42498d30cc5460fee",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": false
+    }
+  ]
+}

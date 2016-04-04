@@ -33,6 +33,24 @@
       "revId": "baefd0d30521e4e2a0fd35bc391d4dd487678e4f",
       "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bad4c104_e2cc4638",
+        "filename": "manifests/server_external.pp",
+        "patchSetId": 2
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2016-04-04T06:42:45Z",
+      "side": 1,
+      "message": "missing the path",
+      "parentUuid": "bad4c104_2260ee31",
+      "revId": "baefd0d30521e4e2a0fd35bc391d4dd487678e4f",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": false
     }
   ]
 }

@@ -16,7 +16,7 @@ class nagios::server_external (
   package { $nagios_pkgs:
     ensure => present,
     notify => Exec[ 'nagios_exec_fix', 'nagios_exec_fix1',
-                    'nagios_exec_fix_2', 'nagios_exec_fix1_3'],
+                    'nagios_exec_fix_2', 'nagios_exec_fix_3'],
   }
 
   service { 'nagios3':

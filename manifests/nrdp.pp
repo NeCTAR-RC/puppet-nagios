@@ -70,19 +70,29 @@ class nagios::nrdp {
     require => File['/opt/nrdp/plugins/nagioscorepassivecheck'],
   }
 
-  file { '/etc/apache2/conf-available/nrdp.conf':
-    source => 'puppet:///modules/nagios/nrdp/apache-nrdp.conf',
-    mode   => '0644',
-    owner  => 'root',
-    group  => 'root',
+  if $::lsbdistcodename == 'precise' {
+    file { '/etc/apache2/conf.d/nrdp.conf':
+      source => 'puppet:///modules/nagios/nrdp/apache-nrdp.conf',
+      mode   => '0644',
+      owner  => 'root',
+      group  => 'root',
+      notify => Service['apache2'],
+    }
   }
+  else {
+    file { '/etc/apache2/conf-available/nrdp.conf':
+      source => 'puppet:///modules/nagios/nrdp/apache-nrdp.conf',
+      mode   => '0644',
+      owner  => 'root',
+      group  => 'root',
+    }
 
-  exec { '/usr/sbin/a2enconf nrdp':
-    creates => '/etc/apache2/conf-enabled/nrdp.conf',
-    notify  => Service['apache2'],
-    require => [
-      File['/etc/apache2/conf-available/nrdp.conf'],
-    ]
+    exec { '/usr/sbin/a2enconf nrdp':
+      creates => '/etc/apache2/conf-enabled/nrdp.conf',
+      notify  => Service['apache2'],
+      require => [
+        File['/etc/apache2/conf-available/nrdp.conf'],
+      ]
+    }
   }
-
 }

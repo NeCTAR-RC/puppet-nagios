@@ -9,6 +9,12 @@ class nagios::nrpe {
     default =>  'nagios-nrpe-server',
   }
 
+  $nrpe_user = $::osfamily ? {
+    RedHat  =>  'nrpe',
+    Debian  =>  'nagios',
+    default =>  'nrpe',
+  }
+
   $nrpe_plugin = $::osfamily ? {
     RedHat  =>  'nagios-plugins-nrpe',
     Debian  =>  'nagios-nrpe-plugin',
@@ -48,7 +54,7 @@ class nagios::nrpe {
     }
   }
 
-  user { 'nagios':
+  user { $nrpe_user:
     groups  => ['users', 'puppet'],
     require => Package['nagios-nrpe-server'],
   }

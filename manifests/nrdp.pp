@@ -72,7 +72,7 @@ class nagios::nrdp {
 
   if $::lsbdistcodename == 'precise' {
     file { '/etc/apache2/conf.d/nrdp.conf':
-      source => 'puppet:///modules/nagios/nrdp/apache-nrdp.conf',
+      source => 'puppet:///modules/nagios/nrdp/apache-nrdp.conf.precise',
       mode   => '0644',
       owner  => 'root',
       group  => 'root',

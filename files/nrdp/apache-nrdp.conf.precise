@@ -1,0 +1,6 @@
+<Directory "/opt/nrdp">
+   Options None
+   AllowOverride None
+</Directory>
+
+Alias /nrdp "/opt/nrdp"

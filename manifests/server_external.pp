@@ -116,7 +116,7 @@ class nagios::server_external (
     'databases':
       tag   => $environment,
       alias => 'Database Servers.';
-    'tempest_site_server':
+    'tempest_site':
       tag   => $::environment,
       alias => 'Tempest site checks.';
   }

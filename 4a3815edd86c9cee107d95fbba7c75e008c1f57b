@@ -22,6 +22,30 @@
       "revId": "4a3815edd86c9cee107d95fbba7c75e008c1f57b",
       "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7adec928_41043415",
+        "filename": "manifests/service.pp",
+        "patchSetId": 2
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000077
+      },
+      "writtenOn": "2016-07-21T22:53:34Z",
+      "side": 1,
+      "message": "Reverted",
+      "parentUuid": "7adec928_be2199b6",
+      "range": {
+        "startLine": 74,
+        "startChar": 21,
+        "endLine": 74,
+        "endChar": 44
+      },
+      "revId": "4a3815edd86c9cee107d95fbba7c75e008c1f57b",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": false
     }
   ]
 }

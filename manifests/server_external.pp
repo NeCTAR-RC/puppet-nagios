@@ -122,6 +122,9 @@ class nagios::server_external (
     'tempest_site':
       tag   => $::environment,
       alias => 'Tempest site checks.';
+    'tempest_core':
+      tag   => $::environment,
+      alias => 'Tempest core checks.';
   }
 
   nagios::command {

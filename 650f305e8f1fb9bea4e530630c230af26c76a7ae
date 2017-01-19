@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5adbc538_b139c8da",
+        "filename": "manifests/nrdp.pp",
+        "patchSetId": 2
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1000077
+      },
+      "writtenOn": "2017-01-19T22:57:01Z",
+      "side": 1,
+      "message": "Doesn\u0027t need the extra [ ]\n\nShould we just remove the usage of oldapache?",
+      "range": {
+        "startLine": 94,
+        "startChar": 0,
+        "endLine": 96,
+        "endChar": 21
+      },
+      "revId": "650f305e8f1fb9bea4e530630c230af26c76a7ae",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": false
+    }
+  ]
+}

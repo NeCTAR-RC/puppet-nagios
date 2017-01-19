@@ -22,6 +22,30 @@
       "revId": "650f305e8f1fb9bea4e530630c230af26c76a7ae",
       "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5adbc538_11319cec",
+        "filename": "manifests/nrdp.pp",
+        "patchSetId": 2
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2017-01-19T23:05:25Z",
+      "side": 1,
+      "message": "na need to be backward compat",
+      "parentUuid": "5adbc538_b139c8da",
+      "range": {
+        "startLine": 94,
+        "startChar": 0,
+        "endLine": 96,
+        "endChar": 21
+      },
+      "revId": "650f305e8f1fb9bea4e530630c230af26c76a7ae",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": false
     }
   ]
 }

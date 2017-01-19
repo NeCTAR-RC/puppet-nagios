@@ -3,7 +3,6 @@ class nagios::host (
   $address = $::ipaddress,
   $nagios_alias = $::fqdn,
   $hostgroups = 'absent',
-  $parents = 'absent',
   $use = 'generic-host',
 ){
 

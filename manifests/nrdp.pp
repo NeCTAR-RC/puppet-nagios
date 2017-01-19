@@ -87,12 +87,16 @@ class nagios::nrdp {
       group  => 'root',
     }
 
-    exec { '/usr/sbin/a2enconf nrdp':
-      creates => '/etc/apache2/conf-enabled/nrdp.conf',
-      notify  => Service['apache2'],
-      require => [
-        File['/etc/apache2/conf-available/nrdp.conf'],
-      ]
+    if defined(Class['::oldapache']) {
+      exec { '/usr/sbin/a2enconf nrdp':
+        creates => '/etc/apache2/conf-enabled/nrdp.conf',
+        notify  => Service['apache2'],
+        require => File['/etc/apache2/conf-available/nrdp.conf'],
+      }
+    } else {
+      ::apache::custom_config {'nrdp':
+        source => '/etc/apache2/conf-available/nrdp.conf'
+      }
     }
   }
 }

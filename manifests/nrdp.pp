@@ -87,7 +87,7 @@ class nagios::nrdp {
       group  => 'root',
     }
 
-    if defined(Class['::oldapache']) {
+    if defined(Class['::apacheold']) {
       exec { '/usr/sbin/a2enconf nrdp':
         creates => '/etc/apache2/conf-enabled/nrdp.conf',
         notify  => Service['apache2'],

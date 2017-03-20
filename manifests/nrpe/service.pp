@@ -15,8 +15,10 @@ define nagios::nrpe::service (
   $nrpe_command          = 'check_nrpe_1arg',
 ) {
 
+  include ::nagios::nrpe
+
   # Only add NRPE checks if this host is using NRPE
-  if defined(Service[$nagios::nrpe::nrpe]) {
+  if defined(Service[$::nagios::nrpe::nrpe]) {
     nagios::nrpe::command {
       $name:
         check_command => $check_command;

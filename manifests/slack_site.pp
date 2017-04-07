@@ -7,7 +7,7 @@ define nagios::slack_site {
   $slack_api_domain = hiera('slack_api_domain')
   $slack_api_token = hiera('slack_api_token')
 
-  if $::http_proxy and $::rfc1918_gateway == True {
+  if $::http_proxy and str2bool($::rfc1918_gateway) {
     $slack_proxy = "--proxy ${::http_proxy}"
   } else {
     $slack_proxy = ''

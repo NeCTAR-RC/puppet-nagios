@@ -1,8 +1,8 @@
 #Type to create nagios check commands.
 define nagios::nrpe::command ($check_command) {
 
+  Class['Apt::Update'] -> Package <| tag == 'nrpe' |>
   File <| tag == 'nrpe' |>
-  Package <| tag == 'nrpe' |>
   Service <| tag == 'nrpe' |>
 
   file { "/etc/nagios/nrpe.d/${name}.cfg":

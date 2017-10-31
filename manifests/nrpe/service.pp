@@ -2,8 +2,8 @@
 define nagios::nrpe::service (
   $check_command,
   $check_period          = undef,
-  $normal_check_interval = undef,
-  $retry_check_interval  = undef,
+  $check_interval        = undef,
+  $retry_interval        = undef,
   $max_check_attempts    = undef,
   $notification_interval = undef,
   $notification_period   = undef,
@@ -27,8 +27,8 @@ define nagios::nrpe::service (
     nagios::service { $name:
       check_command         => "${nrpe_command}!${name}",
       check_period          => $check_period,
-      normal_check_interval => $normal_check_interval,
-      retry_check_interval  => $retry_check_interval,
+      check_interval        => $check_interval,
+      retry_interval        => $retry_interval,
       max_check_attempts    => $max_check_attempts,
       notification_interval => $notification_interval,
       notification_period   => $notification_period,

@@ -40,7 +40,6 @@ define nagios::service (
   $is_volatile                  = undef,
   $low_flap_threshold           = undef,
   $max_check_attempts           = undef,
-  $normal_check_interval        = undef,
   $notes                        = undef,
   $notes_url                    = undef,
   $notification_interval        = undef,
@@ -55,7 +54,6 @@ define nagios::service (
   $register                     = undef,
   $retain_nonstatus_information = undef,
   $retain_status_information    = undef,
-  $retry_check_interval         = undef,
   $retry_interval               = undef,
   $service_description          = undef,
   $servicegroups                = undef,
@@ -63,7 +61,18 @@ define nagios::service (
   $target                       = undef,
   $use                          = hiera('nagios::service::use', 'generic-service'),
   $check_command,
+  # DEPRECATED PARAMETERS
+  $normal_check_interval        = undef,
+  $retry_check_interval         = undef,
 ) {
+
+  if $normal_check_interval {
+    warning('normal_check_interval parameter is deprecated. Please use check_interval instead.')
+  }
+
+  if $retry_check_interval {
+    warning('retry_check_interval parameter is deprecated. Please use retry_interval instead.')
+  }
 
   $_service_description = $service_description ? {
     undef    => $name,

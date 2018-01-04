@@ -4,27 +4,27 @@ class nagios::nrpe {
   $nagios_hosts = hiera('nagios::hosts', [])
 
   $nrpe = $::osfamily ? {
-    'RedHat'  =>  'nrpe',
-    'Debian'  =>  'nagios-nrpe-server',
-    default   =>  'nagios-nrpe-server',
+    'RedHat' => 'nrpe',
+    'Debian' => 'nagios-nrpe-server',
+    default  => 'nagios-nrpe-server',
   }
 
   $nrpe_user = $::osfamily ? {
-    'RedHat'  =>  'nrpe',
-    'Debian'  =>  'nagios',
-    default   =>  'nagios',
+    'RedHat' => 'nrpe',
+    'Debian' => 'nagios',
+    default  => 'nagios',
   }
 
   $nrpe_plugin = $::osfamily ? {
-    'RedHat'  =>  'nagios-plugins-nrpe',
-    'Debian'  =>  'nagios-nrpe-plugin',
-    default   =>  'nagios-nrpe-plugin',
+    'RedHat' => 'nagios-plugins-nrpe',
+    'Debian' => 'nagios-nrpe-plugin',
+    default  => 'nagios-nrpe-plugin',
   }
 
   $nagios_plugins_contrib = $::osfamily ? {
-    'RedHat'  =>  'nagios-plugins-all',
-    'Debian'  =>  'nagios-plugins-contrib',
-    default   =>  'nagios-plugins-contrib',
+    'RedHat' => 'nagios-plugins-all',
+    'Debian' => 'nagios-plugins-contrib',
+    default  => 'nagios-plugins-contrib',
   }
 
   @package {
@@ -80,10 +80,10 @@ class nagios::nrpe {
                   '/etc/nagios', '/etc/nagios/nrpe.d',]
 
   file { $plugin_dirs:
-    ensure  => directory,
-    mode    => '0755',
-    owner   => 'root',
-    group   => 'root',
+    ensure => directory,
+    mode   => '0755',
+    owner  => 'root',
+    group  => 'root',
   }
 
   file { '/etc/nagios-plugins/config/check_nrpe.cfg':
@@ -96,11 +96,11 @@ class nagios::nrpe {
 
   @file {
     '/usr/local/lib/nagios/':
-      ensure  => directory,
-      owner   => root,
-      group   => root,
-      mode    => '0755',
-      tag     => 'nrpe';
+      ensure => directory,
+      owner  => root,
+      group  => root,
+      mode   => '0755',
+      tag    => 'nrpe';
     '/usr/local/lib/nagios/plugins':
       ensure  => directory,
       owner   => root,
@@ -110,4 +110,3 @@ class nagios::nrpe {
       tag     => 'nrpe';
   }
 }
-

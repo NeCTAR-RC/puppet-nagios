@@ -16,7 +16,7 @@ log_facility=daemon
 # number.  The file is only written if the NRPE daemon is started by the root
 # user and is running in standalone mode.
 
-pid_file=/var/run/nagios/nrpe.pid
+pid_file=/var/run/<%= @nrpe_user -%>/nrpe.pid
 
 
 # PORT NUMBER
@@ -41,7 +41,7 @@ server_port=5666
 #
 # NOTE: This option is ignored if NRPE is running under either inetd or xinetd
 
-nrpe_user=nagios
+nrpe_user=<%= @nrpe_user %>
 
 
 # NRPE GROUP
@@ -50,7 +50,7 @@ nrpe_user=nagios
 #
 # NOTE: This option is ignored if NRPE is running under either inetd or xinetd
 
-nrpe_group=nagios
+nrpe_group=<%= @nrpe_user %>
 
 
 # ALLOWED HOST ADDRESSES

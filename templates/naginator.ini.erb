@@ -1,5 +1,5 @@
 [puppet]
-environment=<%= @environment %>
+environment=<%= @config_environment %>
 <%- if @use_ssl -%>
 ssl_cert=/var/lib/puppet/ssl/certs/<%= @fqdn %>.pem
 ssl_key=/var/lib/puppet/ssl/private_keys/<%= @fqdn %>.pem
@@ -8,7 +8,7 @@ ca_cert=/var/lib/puppet/ssl/certs/ca.pem
 timeout=<%= @naginator_timeout %>
 
 [query]
-tag=<%= @environment %>
+tag=<%= @config_environment %>
 
 <% @naginator.sort.map do |key, value| -%>
 [<%= key %>]

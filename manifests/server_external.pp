@@ -10,6 +10,7 @@ class nagios::server_external (
   include ::nagios::nrdp
 
   $naginator = hiera('nagios::naginator', {})
+  $config_environment = hiera('puppet::config_environment', $::environment)
 
   $nagios_pkgs = [ 'nagios3', 'nagios-images']
 
@@ -108,22 +109,22 @@ class nagios::server_external (
 
   @@nagios_servicegroup {
     'openstack-endpoints':
-      tag   => $environment,
+      tag   => $config_environment,
       alias => 'The user facing endpoints.';
     'message-queues':
-      tag   => $environment,
+      tag   => $config_environment,
       alias => 'RabbitMQ and other queues.';
     'databases':
-      tag   => $environment,
+      tag   => $config_environment,
       alias => 'Database Servers.';
     'tempest_site_server':
-      tag   => $::environment,
+      tag   => $config_environment,
       alias => 'Tempest site checks.';
     'tempest_site':
-      tag   => $::environment,
+      tag   => $config_environment,
       alias => 'Tempest site checks.';
     'tempest_core':
-      tag   => $::environment,
+      tag   => $config_environment,
       alias => 'Tempest core checks.';
   }
 

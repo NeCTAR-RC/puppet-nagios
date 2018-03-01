@@ -1,5 +1,7 @@
 class nagios::server {
 
+  $config_environment = hiera('puppet::config_environment', $::environment)
+
   $nagios_pkgs = [ 'nagios3', 'nagios-images']
 
   package { $nagios_pkgs:
@@ -42,30 +44,30 @@ class nagios::server {
 
   nagios_servicegroup {
     "openstack-endpoints":
-      tag => $environment,
+      tag => $config_environment,
       alias => "The user facing endpoints.";
     "message-queues":
-      tag => $environment,
+      tag => $config_environment,
       alias => "RabbitMQ and other queues.";
     "databases":
-      tag => $environment,
+      tag => $config_environment,
       alias => "Database Servers.";
   }
 
-  Nagios_command <<| tag == $environment |>>
-  Nagios_contactgroup <<| tag == $environment |>>
-  Nagios_contact <<| tag == $environment |>>
-  Nagios_hostdependency <<| tag == $environment |>>
-  Nagios_hostescalation <<| tag == $environment |>>
-  Nagios_hostextinfo <<| tag == $environment |>>
-  Nagios_hostgroup <<| tag == $environment |>>
-  Nagios_host <<| tag == $environment |>>
-  Nagios_servicedependency <<| tag == $environment |>>
-  Nagios_serviceescalation <<| tag == $environment |>>
-  Nagios_servicegroup <<| tag == $environment |>>
-  Nagios_serviceextinfo <<| tag == $environment |>>
-  Nagios_service <<| tag == $environment |>>
-  Nagios_timeperiod <<| tag == $environment |>>
+  Nagios_command <<| tag == $config_environment |>>
+  Nagios_contactgroup <<| tag == $config_environment |>>
+  Nagios_contact <<| tag == $config_environment |>>
+  Nagios_hostdependency <<| tag == $config_environment |>>
+  Nagios_hostescalation <<| tag == $config_environment |>>
+  Nagios_hostextinfo <<| tag == $config_environment |>>
+  Nagios_hostgroup <<| tag == $config_environment |>>
+  Nagios_host <<| tag == $config_environment |>>
+  Nagios_servicedependency <<| tag == $config_environment |>>
+  Nagios_serviceescalation <<| tag == $config_environment |>>
+  Nagios_servicegroup <<| tag == $config_environment |>>
+  Nagios_serviceextinfo <<| tag == $config_environment |>>
+  Nagios_service <<| tag == $config_environment |>>
+  Nagios_timeperiod <<| tag == $config_environment |>>
 
   resources {
     [ 'nagios_command',
@@ -85,69 +87,69 @@ class nagios::server {
         purge => true;
   }
 
-  Nagios_command <| tag == $environment |> {
+  Nagios_command <| tag == $config_environment |> {
     require => File['nagios_confd'],
     notify  => Service['nagios3'],
   }
-  Nagios_contact <| tag == $environment |> {
+  Nagios_contact <| tag == $config_environment |> {
     target  => '/etc/nagios3/conf.d/nagios_contact.cfg',
     require => File['nagios_confd'],
     notify  => Service['nagios3'],
   }
-  Nagios_contactgroup <| tag == $environment |> {
+  Nagios_contactgroup <| tag == $config_environment |> {
     target  => '/etc/nagios3/conf.d/nagios_contactgroup.cfg',
     require => File['nagios_confd'],
     notify  => Service['nagios3'],
   }
-  Nagios_host <| tag == $environment |> {
+  Nagios_host <| tag == $config_environment |> {
     target  => '/etc/nagios3/conf.d/nagios_host.cfg',
     require => File['nagios_confd'],
     notify  => Service['nagios3'],
   }
-  Nagios_hostdependency <| tag == $environment |> {
+  Nagios_hostdependency <| tag == $config_environment |> {
     target => '/etc/nagios3/conf.d/nagios_hostdependency.cfg',
     notify => Service['nagios3'],
   }
-  Nagios_hostescalation <| tag == $environment |> {
+  Nagios_hostescalation <| tag == $config_environment |> {
     target => '/etc/nagios3/conf.d/nagios_hostescalation.cfg',
     notify => Service['nagios3'],
   }
-  Nagios_hostextinfo <| tag == $environment |> {
+  Nagios_hostextinfo <| tag == $config_environment |> {
     target  => '/etc/nagios3/conf.d/nagios_hostextinfo.cfg',
     require => File['nagios_confd'],
     notify  => Service['nagios3'],
   }
-  Nagios_hostgroup <| tag == $environment |> {
+  Nagios_hostgroup <| tag == $config_environment |> {
     target  => '/etc/nagios3/conf.d/nagios_hostgroup.cfg',
     require => File['nagios_confd'],
     notify  => Service['nagios3'],
   }
-  Nagios_service <| tag == $environment |> {
+  Nagios_service <| tag == $config_environment |> {
     target  => '/etc/nagios3/conf.d/nagios_service.cfg',
     require => File['nagios_confd'],
     notify  => Service['nagios3'],
   }
-  Nagios_servicegroup <| tag == $environment |> {
+  Nagios_servicegroup <| tag == $config_environment |> {
     target  => '/etc/nagios3/conf.d/nagios_servicegroup.cfg',
     require => File['nagios_confd'],
     notify  => Service['nagios3'],
   }
-  Nagios_servicedependency <| tag == $environment |> {
+  Nagios_servicedependency <| tag == $config_environment |> {
     target  => '/etc/nagios3/conf.d/nagios_servicedependency.cfg',
     require => File['nagios_confd'],
     notify  => Service['nagios3'],
   }
-  Nagios_serviceescalation <| tag == $environment |> {
+  Nagios_serviceescalation <| tag == $config_environment |> {
     target  => '/etc/nagios3/conf.d/nagios_serviceescalation.cfg',
     require => File['nagios_confd'],
     notify  => Service['nagios3'],
   }
-  Nagios_serviceextinfo <| tag == $environment |> {
+  Nagios_serviceextinfo <| tag == $config_environment |> {
     target  => '/etc/nagios3/conf.d/nagios_serviceextinfo.cfg',
     require => File['nagios_confd'],
     notify  => Service['nagios3'],
   }
-  Nagios_timeperiod <| tag == $environment |> {
+  Nagios_timeperiod <| tag == $config_environment |> {
     target  => '/etc/nagios3/conf.d/nagios_timeperiod.cfg',
     require => File['nagios_confd'],
     notify  => Service['nagios3'],

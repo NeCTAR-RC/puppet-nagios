@@ -1,5 +1,7 @@
 class nagios::server {
 
+  $config_environment = hiera('puppet::config_environment', $::environment)
+
   $nagios_pkgs = [ 'nagios3', 'nagios-images']
 
   package { $nagios_pkgs:
@@ -42,30 +44,30 @@ class nagios::server {
 
   nagios_servicegroup {
     "openstack-endpoints":
-      tag => $environment,
+      tag => $config_environment,
       alias => "The user facing endpoints.";
     "message-queues":
-      tag => $environment,
+      tag => $config_environment,
       alias => "RabbitMQ and other queues.";
     "databases":
-      tag => $environment,
+      tag => $config_environment,
       alias => "Database Servers.";
   }
 
-  Nagios_command <<| tag == $environment |>>
-  Nagios_contactgroup <<| tag == $environment |>>
-  Nagios_contact <<| tag == $environment |>>
-  Nagios_hostdependency <<| tag == $environment |>>
-  Nagios_hostescalation <<| tag == $environment |>>
-  Nagios_hostextinfo <<| tag == $environment |>>
-  Nagios_hostgroup <<| tag == $environment |>>
-  Nagios_host <<| tag == $environment |>>
-  Nagios_servicedependency <<| tag == $environment |>>
-  Nagios_serviceescalation <<| tag == $environment |>>
-  Nagios_servicegroup <<| tag == $environment |>>
-  Nagios_serviceextinfo <<| tag == $environment |>>
-  Nagios_service <<| tag == $environment |>>
-  Nagios_timeperiod <<| tag == $environment |>>
+  Nagios_command <<| tag == $config_environment |>>
+  Nagios_contactgroup <<| tag == $config_environment |>>
+  Nagios_contact <<| tag == $config_environment |>>
+  Nagios_hostdependency <<| tag == $config_environment |>>
+  Nagios_hostescalation <<| tag == $config_environment |>>
+  Nagios_hostextinfo <<| tag == $config_environment |>>
+  Nagios_hostgroup <<| tag == $config_environment |>>
+  Nagios_host <<| tag == $config_environment |>>
+  Nagios_servicedependency <<| tag == $config_environment |>>
+  Nagios_serviceescalation <<| tag == $config_environment |>>
+  Nagios_servicegroup <<| tag == $config_environment |>>
+  Nagios_serviceextinfo <<| tag == $config_environment |>>
+  Nagios_service <<| tag == $config_environment |>>
+  Nagios_timeperiod <<| tag == $config_environment |>>
 
   resources {
     [ 'nagios_command',

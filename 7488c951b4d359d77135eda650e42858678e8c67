@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "61c03e7d_e28b0645",
+        "filename": "manifests/servicegroup.pp",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000104
+      },
+      "writtenOn": "2018-03-26T03:26:04Z",
+      "side": 1,
+      "message": "this needs to be $config_environment instead. see https://review.rc.nectar.org.au/#/c/12553/4/manifests/service.pp",
+      "range": {
+        "startLine": 15,
+        "startChar": 30,
+        "endLine": 15,
+        "endChar": 45
+      },
+      "revId": "7488c951b4d359d77135eda650e42858678e8c67",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": false
+    }
+  ]
+}

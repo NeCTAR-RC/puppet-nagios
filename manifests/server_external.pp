@@ -107,26 +107,8 @@ class nagios::server_external (
     group   => nagios;
   }
 
-  @@nagios_servicegroup {
-    'openstack-endpoints':
-      tag   => $config_environment,
-      alias => 'The user facing endpoints.';
-    'message-queues':
-      tag   => $config_environment,
-      alias => 'RabbitMQ and other queues.';
-    'databases':
-      tag   => $config_environment,
-      alias => 'Database Servers.';
-    'tempest_site_server':
-      tag   => $config_environment,
-      alias => 'Tempest site checks.';
-    'tempest_site':
-      tag   => $config_environment,
-      alias => 'Tempest site checks.';
-    'tempest_core':
-      tag   => $config_environment,
-      alias => 'Tempest core checks.';
-  }
+  $servicegroups = hiera('nagios::servicegroups', {})
+  create_resources('nagios::servicegroup', $servicegroups)
 
   nagios::command {
     'http_port':

@@ -54,8 +54,17 @@ class nagios::nrpe {
     }
   }
 
+  # check if client is running puppet 3
+  $puppet3 = (versioncmp($::puppetversion,'4.0.0') < 0)
+  if $puppet3 {
+    $user_groups = ['users', 'puppet',]
+  }
+  else {
+    $user_groups = ['users',]
+  }
+
   user { $nrpe_user:
-    groups  => ['users', 'puppet'],
+    groups  => $user_groups,
     require => Package['nagios-nrpe-server'],
   }
 

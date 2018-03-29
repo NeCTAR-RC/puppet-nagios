@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "05de6efd_1c5a0bc9",
+        "filename": "manifests/nrpe.pp",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000104
+      },
+      "writtenOn": "2018-03-29T02:16:39Z",
+      "side": 0,
+      "message": "I\u0027ve been tracing the source, as far as I can tell this was used by the old check_puppet script which didn\u0027t use sudo (Change I0bb702786f6b54179be3fe3ab7a23f7d3e5dacab)\n\nI think this is safe to remove, and eventually we should do it",
+      "range": {
+        "startLine": 58,
+        "startChar": 26,
+        "endLine": 58,
+        "endChar": 32
+      },
+      "revId": "22978e7d8ec99e229b38999f414758e9ba1ea976",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": false
+    }
+  ]
+}

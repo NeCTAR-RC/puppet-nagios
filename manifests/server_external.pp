@@ -8,6 +8,7 @@ class nagios::server_external (
   ){
 
   include ::nagios::nrdp
+  include ::stdlib
 
   $naginator = hiera('nagios::naginator', {})
   $config_environment = hiera('puppet::config_environment', $::environment)

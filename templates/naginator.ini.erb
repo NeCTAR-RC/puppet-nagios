@@ -1,9 +1,9 @@
 [puppet]
 environment=<%= @config_environment %>
 <%- if @use_ssl -%>
-ssl_cert=/var/lib/puppet/ssl/certs/<%= @fqdn %>.pem
-ssl_key=/var/lib/puppet/ssl/private_keys/<%= @fqdn %>.pem
-ca_cert=/var/lib/puppet/ssl/certs/ca.pem
+ssl_cert=<%= @puppet_ssldir %>/certs/<%= @fqdn %>.pem
+ssl_key=<%= @puppet_ssldir %>/private_keys/<%= @fqdn %>.pem
+ca_cert=<%= @puppet_ssldir %>/certs/ca.pem
 <%- end -%>
 timeout=<%= @naginator_timeout %>
 

@@ -8,7 +8,7 @@ ca_cert=<%= @puppet_ssldir %>/certs/ca.pem
 timeout=<%= @naginator_timeout %>
 
 [query]
-tag=<%= @config_environment %>
+environment=<%= @config_environment %>
 
 <% @naginator.sort.map do |key, value| -%>
 [<%= key %>]

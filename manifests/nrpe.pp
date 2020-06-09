@@ -15,6 +15,12 @@ class nagios::nrpe {
     default  => 'nagios',
   }
 
+  $nagios_plugin = $::osfamily ? {
+    'RedHat' => 'nagios-plugins',
+    'Debian' => 'monitoring-plugins',
+    default  => 'monitoring-plugins',
+  }
+
   $nrpe_plugin = $::osfamily ? {
     'RedHat' => 'nagios-plugins-nrpe',
     'Debian' => 'nagios-nrpe-plugin',
@@ -36,7 +42,7 @@ class nagios::nrpe {
       ensure => present,
       alias  => 'nagios-nrpe-plugin',
       tag    => 'nrpe';
-    'nagios-plugins':
+    $nagios_plugin :
       ensure => present,
       tag    => 'nrpe';
     $nagios_plugins_contrib :

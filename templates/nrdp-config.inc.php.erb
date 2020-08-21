@@ -35,14 +35,14 @@ $cfg["valid_basic_auth_users"]=array(
 $cfg["nagios_command_group"]="www-data";
 
 // full path to Nagios external command file
-$cfg["command_file"]="/var/lib/nagios3/rw/nagios.cmd";
+$cfg["command_file"]="/var/lib/<%= @nagios_version %>/rw/nagios.cmd";
 
 // full path to check results spool directory
-$cfg["check_results_dir"]="/var/lib/nagios3/spool/checkresults";
+$cfg["check_results_dir"]="/var/lib/<%= @nagios_version %>/spool/checkresults";
 
 // full path to directory where temp scratch files can be written
 // NOTE: the Apache user need to be able create files here, and the Nagios user needs to read/delete those same files, so the /tmp system directory won't work (it has a sticky bit on it)
-$cfg["tmp_dir"]="/var/lib/nagios3/tmp";
+$cfg["tmp_dir"]="/var/lib/<%= @nagios_version %>/tmp";
 
 
 ///////// DONT MODIFY ANYTHING BELOW THIS LINE /////////

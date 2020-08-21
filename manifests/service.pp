@@ -66,6 +66,8 @@ define nagios::service (
   $retry_check_interval         = undef,
 ) {
 
+  include nagios::params
+
   $config_environment = hiera('puppet::config_environment', $::environment)
 
   if $normal_check_interval {
@@ -133,7 +135,7 @@ define nagios::service (
     target                       => $target,
     use                          => $use,
     tag                          => $config_environment,
-    notify                       => Service['nagios3'],
+    notify                       => Service[$nagios::params::nagios_version],
     service_description          => $_service_description,
   }
 }

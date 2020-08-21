@@ -1,4 +1,4 @@
-define nagios::command (
+define nagios::command inherits nagios::params (
   $command_line = undef,
   $check_command = undef,
 ) {
@@ -19,7 +19,7 @@ define nagios::command (
     $name:
       tag          => $config_environment,
       mode         => '0644',
-      target       => "/etc/nagios3/conf.d/$name.cfg",
+      target       => "/etc/${nagios::params::nagios_version}/conf.d/$name.cfg",
       command_line => $command,
   }
 

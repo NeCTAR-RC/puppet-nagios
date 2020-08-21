@@ -3,7 +3,13 @@ class nagios::nrdp {
 
   $nrdp_tokens = hiera('nagios::nrdp_tokens', [])
 
-  file { '/var/lib/nagios3/tmp':
+  if versioncmp('20.04', $::lsbdistrelease) < 0 {
+    $nagios_version = 'nagios3'
+  } else {
+    $nagios_version = 'nagios4'
+  }
+
+  file { "/var/lib/${nagios_version}/tmp":
     ensure => directory,
     mode   => '0770',
     owner  => 'nagios',

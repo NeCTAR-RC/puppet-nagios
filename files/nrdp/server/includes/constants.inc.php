@@ -1,10 +1,33 @@
 <?php
-//
-// NRDP Constants
-// Copyright (c) 2008 Nagios Enterprises, LLC.
-// License: Nagios Open Software License <http://www.nagios.com/legal/licenses>
-//
-// $Id: constants.inc.php 12 2010-06-19 04:19:35Z egalstad $
+/*****************************************************************************
+ *
+ *
+ *  NRDP Constants
+ *
+ *
+ *  Copyright (c) 2008-2020 - Nagios Enterprises, LLC. All rights reserved.
+ *
+ *  License: GNU General Public License version 3
+ *
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *****************************************************************************/
+
+// PRODUCT INFO
+define("PRODUCT_NAME", "nrdp");
+define("PRODUCT_VERSION", "2.0.3");
 
 // ERROR STRINGS
 define("ERROR_CAPABILITY_NOT_ENABLED","NOT ENABLED");
@@ -18,8 +41,10 @@ define("ERROR_BAD_USER","BAD_USER");
 define("ERROR_NO_TOKEN_SUPPLIED","NO TOKEN");
 define("ERROR_NO_TOKENS_DEFINED","NO TOKENS");
 define("ERROR_BAD_TOKEN_SUPPLIED","BAD TOKEN");
+define("ERROR_DENIED_TOKEN", "DENIED TOKEN");
 
 define("ERROR_NO_COMMAND","NO COMMAND");
+define("ERROR_DISABLED_COMMAND", "COMMANDS DISABLED");
 
 define("ERROR_NO_COMMAND_FILE","NO COMMAND FILE");
 define("ERROR_BAD_COMMAND_FILE","BAD COMMAND FILE");
@@ -42,9 +67,11 @@ define("ERROR_READ_STATUS_FILE","UNABLE TO READ STATUS FILE");
 
 define("ERROR_NO_DATA","NO DATA");
 define("ERROR_BAD_XML","BAD XML");
-
+define("ERROR_BAD_JSON","BAD JSON");
 
 // CALLBACKS
 define("CALLBACK_PROCESS_REQUEST","PROCESS_REQUEST");
 
-?>
+// OUTPUT TYPES
+define("TYPE_XML", "TYPE_XML");
+define("TYPE_JSON", "TYPE_JSON");

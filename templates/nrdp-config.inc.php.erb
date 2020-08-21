@@ -1,54 +1,151 @@
 <?php
-// NRDP Config File
-// Copyright (c) 2010 Nagios Enterprises, LLC.
-// License: Nagios Open Software License <http://www.nagios.com/legal/licenses>
+/////////////////////////////////////////////////////////////
 //
-// $Id: config.inc.php 12 2010-06-19 04:19:35Z egalstad $
-
-
-// an array of one or more tokens that are valid for this NRDP install
+// authorized_tokens
+//
+// An array of one or more tokens that are valid for this NRDP install
 // a client request must contain a valid token in order for the NRDP to response or honor the request
-// NOTE: tokens are just alphanumeric strings - make them hard to guess!
+// NOTE: Tokens are just alphanumeric strings - make them hard to guess!
+
 $cfg['authorized_tokens'] = array(
 <% @nrdp_tokens.each do |token| -%>
-	"<%= token %>",
+    "<%= token %>",
 <% end -%>
 );
 
-// do we require that HTTPS be used to access NRDP?
-// set this value to 'false' to disable HTTPS requirement
-$cfg["require_https"]=false;
 
-// do we require that basic authentication be used to access NRDP?
-// set this value to 'false' to disable basic auth requirement
-$cfg["require_basic_auth"]=false;
 
-// what basic authentication users are allowed to access NRDP?
+/////////////////////////////////////////////////////////////
+//
+// external_commands_deny_tokens
+//
+// By default, all authorized tokens are allowed to submit any
+// external command (unless it"s disable below)
+// This is a deny mapping in the form of COMMAND => TOKEN or TOKENS
+// You can specify a whole command, or use * as a wildcard
+// Or you can specify "all" to stop any token from using any external command
+// the tokens specified can either be a string with 1 token, or an array of 1 or more tokens
+
+$cfg["external_commands_deny_tokens"] = array(
+    // "ACKNOWLEDGE_HOST_PROBLEM" => array("mysecrettoken", "myothertoken"),
+    // "ACKNOWLEDGE_SVC_PROBLEM"  => "mysecrettoken",
+    // "all"                      => array("mysecrettoken", "myothertoken"),
+    // "ACKNOWLEDGE_*"            => "mysecrettoken",
+    // "*_HOST_*"                 => array("mysecrettoken", "myothertoken"),
+);
+
+
+
+/////////////////////////////////////////////////////////////
+//
+// require_https
+//
+// Do we require that HTTPS be used to access NRDP?
+// set this value to false to disable HTTPS requirement
+
+$cfg["require_https"] = false;
+
+
+
+/////////////////////////////////////////////////////////////
+//
+// require_basic_auth
+//
+// Do we require that basic authentication be used to access NRDP?
+// set this value to false to disable basic auth requirement
+
+$cfg["require_basic_auth"] = false;
+
+
+
+/////////////////////////////////////////////////////////////
+//
+// valid_basic_auth_users
+//
+// What basic authentication users are allowed to access NRDP?
 // comment this variable out to allow all authenticated users access to the NRDP
-$cfg["valid_basic_auth_users"]=array(
-	"nrdpuser"
-	);
 
-// the name of the system group that has write permissions to the external command file
+$cfg["valid_basic_auth_users"] = array(
+    "nrdpuser"
+);
+
+
+
+/////////////////////////////////////////////////////////////
+//
+// nagios_command_group
+//
+// The name of the system group that has write permissions to the external command file
 // this group is also used to set file permissions when writing bulk commands or passive check results
 // NOTE: both the Apache and Nagios users must be a member of this group
-$cfg["nagios_command_group"]="www-data";
 
-// full path to Nagios external command file
-$cfg["command_file"]="/var/lib/nagios3/rw/nagios.cmd";
-
-// full path to check results spool directory
-$cfg["check_results_dir"]="/var/lib/nagios3/spool/checkresults";
-
-// full path to directory where temp scratch files can be written
-// NOTE: the Apache user need to be able create files here, and the Nagios user needs to read/delete those same files, so the /tmp system directory won't work (it has a sticky bit on it)
-$cfg["tmp_dir"]="/var/lib/nagios3/tmp";
+$cfg["nagios_command_group"] = "www-data";
 
 
-///////// DONT MODIFY ANYTHING BELOW THIS LINE /////////
+/////////////////////////////////////////////////////////////
+//
+// command_file
+//
+// Full path to Nagios external command file
 
-$cfg['product_name']='nrdp';
-$cfg['product_version']='1.0'
+$cfg["command_file"]="/var/lib/<%= @nagios_version %>/rw/nagios.cmd";
 
 
-?>
+
+/////////////////////////////////////////////////////////////
+//
+// check_results_dir
+//
+// Full path to check results spool directory
+
+$cfg["check_results_dir"]="/var/lib/<%= @nagios_version %>/spool/checkresults";
+
+
+
+/////////////////////////////////////////////////////////////
+//
+// disable_external_commands
+//
+// Should we allow external commands? Set to true or false (Boolean, not a string)
+
+$cfg["disable_external_commands"] = false;
+
+
+
+/////////////////////////////////////////////////////////////
+//
+// allow_old_results
+//
+// Allows Nagios XI to send old check results directly into NDO if configured
+
+$cfg["allow_old_results"] = false;
+
+
+
+/////////////////////////////////////////////////////////////
+//
+// hide_display_page
+//
+// Should the main NRDP display page that allows submissions be hidden? true/false
+
+$cfg["hide_display_page"] = false;
+
+
+
+/////////////////////////////////////////////////////////////
+//
+// debug
+//
+// Enable debug logging
+
+$cfg["debug"] = false;
+
+
+
+/////////////////////////////////////////////////////////////
+//
+// debug_log
+//
+// Where should the logs go?
+
+$cfg["debug_log"] = "/tmp/nrdp-server.log";

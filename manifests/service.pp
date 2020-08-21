@@ -64,7 +64,7 @@ define nagios::service (
   # DEPRECATED PARAMETERS
   $normal_check_interval        = undef,
   $retry_check_interval         = undef,
-) {
+) inherits nagios::params {
 
   $config_environment = hiera('puppet::config_environment', $::environment)
 
@@ -133,7 +133,7 @@ define nagios::service (
     target                       => $target,
     use                          => $use,
     tag                          => $config_environment,
-    notify                       => Service['nagios3'],
+    notify                       => Service[$nagios::params::nagios_version],
     service_description          => $_service_description,
   }
 }

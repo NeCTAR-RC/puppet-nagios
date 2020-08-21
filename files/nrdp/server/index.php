@@ -1,321 +1,561 @@
 <?php
-//
-// Nagios Remote Data Processor (NRDP)
-// Copyright (c) 2010 Nagios Enterprises, LLC.
-//
-// License: Nagios Open Software License <http://www.nagios.com/legal/licenses>
-//
-// $Id: index.php 12 2010-06-19 04:19:35Z egalstad $
+/*****************************************************************************
+ *
+ *
+ *  NRDP - Nagios Remote Data Processor
+ *
+ *
+ *  Copyright (c) 2008-2020 - Nagios Enterprises, LLC. All rights reserved.
+ *
+ *  License: GNU General Public License version 3
+ *
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *****************************************************************************/
 
-require_once(dirname(__FILE__).'/config.inc.php');
-require_once(dirname(__FILE__).'/includes/utils.inc.php');
 
-// load plugins
+//////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////
+// Page Settings
+// (Change these variables to customize your NRDP landing page)
+///////////////////
+
+// Should we display a token by default?
+$display_token = true;
+$page_token = "token";
+
+
+// There are several tabs you can land on
+//$default_tab = "command";
+//$default_tab = "checkresult";
+//$default_tab = "xml";
+$default_tab = "json";
+
+// Do you want the alerts at the top of the page? Or on the bottom?
+//$display_alerts = "bottom";
+$display_alerts = "top";
+
+
+// What is the alert message timeout? (in seconds)
+$alert_timeout = 3;
+
+
+// This is the example data that will be populated in the data on the page
+$fake_command               = "DISABLE_HOST_NOTIFICATIONS";
+$fake_host_name             = "somehost";
+$fake_service_description   = "someservice";
+$fake_output_good           = "Everything looks okay! | perfdata=1;";
+$fake_output_bad            = "WARNING: Danger Will Robinson! | perfdata=1;";
+
+
+//////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////
+
+
+require_once(dirname(__FILE__) . "/config.inc.php");
+require_once(dirname(__FILE__) . "/includes/utils.inc.php");
+
+
+// Load plugins
 load_plugins();
 
-// grab GET or POST variables 
-grab_request_vars();
 
-// check authorization
+// Setup and authenticate
+grab_request_vars();
 check_auth();
 
-// handle the request
+
 route_request();
 
 
-function route_request(){
+function route_request()
+{
+    global $cfg;
+    $cmd = strtolower(grab_request_var("cmd"));
 
-	$cmd=strtolower(grab_request_var("cmd"));
+    // If no command was specified check if we should show the options
+    if (empty($cmd) && empty($cfg['hide_display_page'])) {
+        display_form();
+    }
 
-	// token if required for most everyting
-	if($cmd!="" && $cmd!="hello")
-		check_token();
+    if ($cmd == "hello") {
+        say_hello();
+    }
 
-	//echo "CMD='$cmd'<BR>";
+    // Check for authenticated token
+    check_token();
 
-	switch($cmd){
+    $args = array(
+        "cmd" => $cmd
+    );
+    do_callbacks(CALLBACK_PROCESS_REQUEST, $args);
 
-		// say hello
-		case "hello":
-			say_hello();
-			break;
-		// display a form for debugging/testing
-		case "":
-			display_form();
-			break;
-
-		default:
-			//echo "PASSING TO PLUGINS<BR>";
-			// let plugins handle the output
-			$args=array(
-				"cmd" => $cmd,
-				);
-			do_callbacks(CALLBACK_PROCESS_REQUEST,$args);
-			break;
-		}
-
-	echo "NO REQUEST HANDLER";
-
-	exit();
-	}
+    // A callback should have exited already
+    echo "No command specified or request handler";
+    exit();
+}
 
 
-function submit_nagios_command($raw=false){
-	global $cfg;
+function say_hello()
+{
+    $response = array(
+        "response" => array(
+            "status" => 0,
+            "message" => "OK",
+            "product" => get_product_name(),
+            "version" => get_product_version(),
+            ),
+        );
 
-	$command=grab_request_var("command");
-
-	// make sure we have a command
-	if(!have_value($command))
-		handle_api_error(ERROR_NO_COMMAND);
-
-	// make sure we can write to external command file
-	if(!isset($cfg["command_file"]))
-		handle_api_error(ERROR_NO_COMMAND_FILE);
-	if(!file_exists($cfg["command_file"]))
-		handle_api_error(ERROR_BAD_COMMAND_FILE);
-	if(!is_writeable($cfg["command_file"]))
-		handle_api_error(ERROR_COMMAND_FILE_OPEN_WRITE);
-
-	// open external command file
-	if(($handle=@fopen($cfg["command_file"],"w+"))===false)
-		handle_api_error(ERROR_COMMAND_FILE_OPEN);
-
-	// get current time
-	$ts=time();
-
-	// write the external command(s)
-	$error=false;
-	if(!is_array($command)){
-		if($raw==false)
-			fwrite($handle,"[".$ts."] ");
-		$result=fwrite($handle,$command."\n");
-		//echo "WROTE: ".$request["command"]."<BR>\n";
-		}
-	else{
-		foreach($command as $cmd){
-			if($raw==false)
-				fwrite($handle,"[".$ts."] ");
-			$result=fwrite($handle,$cmd."\n");
-			//echo "WROTE: ".$cmd."<BR>\n";
-			if($result===false)
-				break;
-			}
-		}
-
-	// close the file
-	fclose($handle);
-
-	if($result===false)
-		handle_api_error(ERROR_BAD_WRITE);
-
-	output_api_header();
-
-	echo "<result>\n";
-	echo "  <status>0</status>\n";
-	echo "  <message>OK</message>\n";
-	echo "</result>\n";
-	}
+    output_response($response);
+    exit();
+}
 
 
-function submit_check_data(){
-	global $cfg;
-	global $request;
-
-	$debug=false;
-
-	if($debug){
-		echo "REQUEST:<BR>";
-		print_r($request);
-		echo "<BR>";
-		}
-
-	// check results are passed as XML data
-	$xmldata=grab_request_var("XMLDATA");
-
-	if($debug){
-		echo "XMLDATA:<BR>";
-		print_r($xmldata);
-		echo "<BR>";
-		}
-
-	// make sure we have data
-	if(!have_value($xmldata))
-		handle_api_error(ERROR_NO_DATA);
-
-	// convert to xml
-	$xml=@simplexml_load_string($xmldata);
-	if(!$xml){
-		print_r(libxml_get_errors());
-		handle_api_error(ERROR_BAD_XML);
-		}
-
-	if($debug){
-		echo "OUR XML:<BR>";
-		print_r($xml);
-		echo "<BR>";
-		}
-
-	// make sure we can write to check results dir
-	if(!isset($cfg["check_results_dir"]))
-		handle_api_error(ERROR_NO_CHECK_RESULTS_DIR);
-	if(!file_exists($cfg["check_results_dir"]))
-		handle_api_error(ERROR_BAD_CHECK_RESULTS_DIR);
-
-	$total_checks=0;
-
-	// process each result
-	foreach($xml->checkresult as $cr){
-
-		// get check result type
-		$type="host";
-		$checktype="1";  // default to passive check 
-		foreach($cr->attributes() as $var => $val){
-			if($var=="type")
-				$type=strval($val);
-			if($var=="checktype")
-				$checktype=intval($val);
-			}
-
-		// common elements
-		$hostname=strval($cr->hostname);
-		$state=intval($cr->state);
-		$output=strval($cr->output);
-
-		// service checks
-		if($type=="service"){
-			$servicename=strval($cr->servicename);
-			}
-
-		////// WRITE THE CHECK RESULT //////
-		// create a temp file to write to
-		$tmpname=tempnam($cfg["check_results_dir"],"c");
-		$fh=fopen($tmpname,"w");
-
-		fprintf($fh,"### NRDP Check ###\n");
-		fprintf($fh,"# Time: %s\n",date('r'));
-		fprintf($fh,"host_name=%s\n",$hostname);
-		if($type=="service")
-			fprintf($fh,"service_description=%s\n",$servicename);
-		fprintf($fh,"check_type=%d\n",$checktype); // 0 for active, 1 for passive
-		if(intval($check_type)==0){
-			fprintf($fh,"scheduled_check=1\n");
-			//fprintf($fh,"reschedule_check=1\n");
-			}
-		else{
-			fprintf($fh,"scheduled_check=0\n");
-			}
-		fprintf($fh,"early_timeout=0\n");
-		fprintf($fh,"exited_ok=1\n");
-		fprintf($fh,"return_code=%d\n",$state);
-		fprintf($fh,"output=%s\\n\n",$output);
-
-		// close the file
-		fclose($fh);
-
-		// change ownership and perms
-		chgrp($tmpname,$cfg["nagios_command_group"]);
-		chmod($tmpname,0770);
-
-		// create an ok-to-go, so Nagios Core picks it up
-		$fh=fopen($tmpname.".ok","w+");
-		fclose($fh);
-
-		$total_checks++;
-		}
+function display_form()
+{
+    global $display_token;
+    global $page_token;
+    global $default_tab;
+    global $display_alerts;
+    global $alert_timeout;
+    global $fake_command;
+    global $fake_host_name;
 
 
-	output_api_header();
-
-	echo "<result>\n";
-	echo "  <status>0</status>\n";
-	echo "  <message>OK</message>\n";
-	echo "    <meta>\n";
-	echo "       <output>".$total_checks." checks processed.</output>\n";
-	echo "    </meta>\n";
-	echo "</result>\n";
-	}
+    $tabs = array("command", "checkresult", "xml", "json");
+    if (!in_array($default_tab, $tabs)) {
+        $default_tab = "";
+    }
 
 
-
-function say_hello(){
-
-	output_api_header();
-
-	echo "<response>\n";
-	echo "  <status>0</status>\n";
-	echo "  <message>OK</message>\n";
-	echo "  <product>".get_product_name()."</product>\n";
-	echo "  <version>".get_product_version()."</version>\n";
-	echo "</response>\n";
-
-	exit();
-	}
+    $xml = get_default_xml();
+    $json = get_default_json();
 
 
-function display_form(){
+    // reset token if we need to
+    if ($display_token == false) {
+        $page_token = "";
+    }
 
 
-
-	$mytoken="test";
 ?>
-	<strong>Submit Nagios Command:</strong><br>
-	<form action="" method="get">
-	<input type="hidden" name="cmd" value="submitcmd">
-	Token: <input type="text" name="token" value="" size="15"><br>
-	Command: <input type="text" name="command" size="50" value="DISABLE_HOST_NOTIFICATIONS;somehost"><br>
-	<input type="submit" name="btnSubmit" value="Submit Command">
-	</form>
+<!doctype html>
+<html>
+<head>
+    <title>Nagios Remote Data Processor</title>
+    <script type="text/javascript" src="includes/jquery-3.2.1.min.js"></script>
+    <link href="includes/bootstrap.min.css" rel="stylesheet" />
+    <script type="text/javascript" src="includes/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            margin: 2em 0;
+        }
+        .btn {
+            margin-top: 2em;
+            cursor: pointer;
+        }
+        .tab-content {
+            margin: 1em 0;
+        }
+        .token-group {
+            margin-top: 1em;
+        }
+    </style>
+    <script type="text/javascript">
 
-	<hr>
+        // number of seconds to keep the alerts
+        var alert_timeout = <?php echo intval($alert_timeout); ?>;
 
-	<strong>Submit Check Data</strong><br>
-	<form action="" method="post">
-	<input type="hidden" name="cmd" value="submitcheck">
-	Token: <input type="text" name="token" value="" size="15"><br>
-	Check Data:<br>
+        function build_alert(cssclass, msg) {
+
+            var $alert = $("<div class=\"alert alert-" + cssclass + " form-control-sm\">" + msg + "</div>");
+            $(".messages").html($alert);
+            return $alert;
+        }
+
+        function check_message_status(status, msg) {
+
+            var $alertbox;
+
+            if (status != 0) {
+                $alertbox = build_alert("danger", msg);
+            } else {
+                $alertbox = build_alert("info", msg);
+            }
+
+            setTimeout(function() { $alertbox.remove(); }, (alert_timeout * 1000));
+        }
+
+        function success_xml(xml) {
+
+            //console.log("success_xml(xml) data:");
+            //console.log(xml);
+
+            var status = $(xml).find("status").text();
+            var msg = $(xml).find("message").text();
+
+            check_message_status(status, msg);
+        }
+
+        function success_json(json) {
+
+            //console.log("success_json(json) data:");
+            //console.log(json);
+
+            var status = json.result.status;
+            var msg = json.result.message;
+
+            check_message_status(status, msg);
+        }
+
+        $(function() {
+
+            // get the page hash so we can set the appropriate tabs
+            var page_hash = $(location).attr("hash").substr(1);
+            if (page_hash == "") {
+
+                // use the php defined default if no hash is used
+                page_hash = "<?php echo $default_tab; ?>";
+            }
+
+            if (page_hash == "command") {
+
+                // this is the default, so we don't need to do anything
+            }
+            else if (page_hash == "checkresult") {
+
+                $(".nav-tabs a[href='#checkresult'").tab("show");
+            }
+            else if (page_hash == "xml") {
+
+                $(".nav-tabs a[href='#checkresult'").tab("show");
+
+                // we don't need to explicitly show the xml tab either
+                // since it is the default
+                //$(".nav-tabs a[href='#xml'").tab("show");
+            }
+            else if (page_hash == "json") {
+
+                $(".nav-tabs a[href='#checkresult'").tab("show");
+                $(".nav-tabs a[href='#json'").tab("show");
+            }
+
+            $(".submit-command").click(function() {
+                $.ajax({
+                    type: "GET",
+                    data: {
+                        cmd: "submitcmd",
+                        token: $("#token").val(),
+                        command: $("#extcommand").val()
+                    },
+                    success: function(xml) { success_xml(xml); }
+                });
+            });
+
+            $(".submit-checkresult-xml").click(function() {
+                $.ajax({
+                    type: "POST",
+                    dataType: "xml",
+                    data: {
+                        cmd: "submitcheck",
+                        token: $("#token").val(),
+                        xml: $("#xml-data").val()
+                    },
+                    success: function(xml) { success_xml(xml); }
+                });
+            });
+
+            $(".submit-checkresult-json").click(function() {
+
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        cmd: "submitcheck",
+                        token: $("#token").val(),
+                        json: $("#json-data").val()
+                    },
+                    success: function(json) { success_json(json); }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+
+        <div class="row">
+            <div class="col-12">
+                <h2>NRDP &middot; Nagios Remote Data Processor</h2>
+            </div>
+        </div>
+
+        <?php 
+            if ($display_alerts == "top") {
+                echo get_alerts_div();
+            }
+        ?>
+
+        <hr />
+
+        <div class="row">
+            <div class="col-12">
+
+                <ul class="nav nav-tabs" id="action-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="command-tab" data-toggle="tab" href="#command" role="tab" aria-controls="command" aria-selected="true">Submit Nagios Command</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="checkresult-tab" data-toggle="tab" href="#checkresult" role="tab" aria-controls="checkresult" aria-selected="false">Submit Check Result</a>
+                    </li>
+                </ul>
+
+                <!-- token is used everywhere -->
+                <div class="form-group token-group">
+                    <label for="token">Token</label>
+                    <input type="text" name="token" id="token" value="<?php echo $page_token; ?>" placeholder="<?php echo $page_token; ?>" class="form-control form-control-sm">
+                    <small class="form-text">
+                        Use the token you've configured in your <code>config.inc.php</code> file.
+                    </small>
+                </div>
+
+                <!-- command / check result tabs -->
+                <div class="tab-content" id="action-contents">
+
+                    <!-- command tab -->
+                    <div class="tab-pane fade show active" id="command" role="tabpanel" aria-labelledby="command-tab">
+
+                        <div class="form-group">
+                            <label for="extcommand">Command</label>
+                            <input type="text" name="command" id="extcommand" value="<?php echo $fake_command . ';' . $fake_host_name; ?>" class="form-control form-control-sm">
+                            <small id="command-command-help" class="form-text">
+                                Specify your command string here. Helpful information <a href="https://assets.nagios.com/downloads/nagioscore/docs/nagioscore/4/en/extcommands.html">can be found here.</a>
+                            </small>
+                        </div>
+
+                        <a href="#" class="btn btn-primary submit-command">Submit Command</a>
+
+                    </div><!-- /command-tab -->
+
+                    <!-- checkresult tab -->
+                    <div class="tab-pane fade" id="checkresult" role="tabpanel" aria-labelledby="checkresult-tab">
+
+                        <ul class="nav nav-tabs" id="crtype-tabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="xml-tab" data-toggle="tab" href="#xml" role="tab" aria-controls="xml" aria-selected="true">XML Check Result</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="json-tab" data-toggle="tab" href="#json" role="tab" aria-controls="json" aria-selected="false">JSON Check Result</a>
+                            </li>
+                        </ul>
+
+                        <!-- xml / json check result tabs -->
+                        <div class="tab-content" id="crtpe-contents">
+
+                            <!-- xml tab -->
+                            <div class="tab-pane fade show active" id="xml" role="tabpanel" aria-labelledby="xml-tab">
+                                <form method="post">
+
+                                <div class="form-group">
+                                    <textarea rows="19" name="xml" id="xml-data" class="form-control form-control-sm"><?php echo $xml; ?></textarea>
+                                    <small class="form-text">
+                                        Check result data in XML format.
+                                    </small>
+                                </div>
+
+                                <a href="#" class="btn btn-primary submit-checkresult-xml">Submit XML Check Result</a>
+
+                            </div><!-- /xmltab -->
+
+                            <!-- json tab -->
+                            <div class="tab-pane fade" id="json" role="tabpanel" aria-labelledby="json-tab">
+
+                                <div class="form-group">
+                                    <textarea rows="23" name="json" id="json-data" class="form-control form-control-sm"><?php echo $json; ?></textarea>
+                                    <small class="form-text">
+                                        Check result data in JSON format.
+                                    </small>
+                                </div>
+
+                                <a href="#" class="btn btn-primary submit-checkresult-json">Submit JSON Check Result</a>
+
+                            </div><!-- /jsontab -->
+
+                        </div><!-- /xml&json check result tabs -->
+                    </div><!-- /checkresult tab -->
+
+                </div><!-- /action-contents -->
+            </div><!-- /col-12 -->
+        </div><!-- /row -->
+
+        <?php 
+            if ($display_alerts == "bottom") {
+                echo get_alerts_div();
+            }
+        ?>
+
+    </div><!-- /container -->
+</body>
+</html>
 <?php
-$xml="
-<?xml version='1.0'?> 
+    exit();
+}
+
+
+// Load all the plugins from the plugin folder
+function load_plugins()
+{
+    $plugins_dir = dirname(__FILE__) . "/plugins/";
+    $sub_dirs = scandir($plugins_dir);
+
+    foreach ($sub_dirs as $sub_dir) {
+
+        if ($sub_dir == "." || $sub_dir == "..") {
+            continue;
+        }
+
+        $plugin_dir = "{$plugins_dir}{$sub_dir}";
+
+        if (is_dir($plugin_dir)) {
+
+            $plugin_file = "{$plugin_dir}/{$sub_dir}.inc.php";
+
+            if (file_exists($plugin_file)) {
+                include_once($plugin_file);
+            }
+        }
+    }
+}
+
+
+
+// grab default xml data output
+// with the defaults specified
+// at the beginning of the script
+function get_default_xml()
+{
+    global $fake_host_name;
+    global $fake_service_description;
+    global $fake_output_good;
+    global $fake_output_bad;
+
+    return <<<XML
+<?xml version='1.0'?>
 <checkresults>
-	<checkresult type='host'>
-		<hostname>somehost</hostname>
-		<state>0</state>
-		<output>Everything looks okay!|perfdata</output>
-	</checkresult>
-	<checkresult type='service'>
-		<hostname>somehost</hostname>
-		<servicename>someservice</servicename>
-		<state>1</state>
-		<output>WARNING: Danger Will Robinson!|perfdata</output>
-	</checkresult>
+    <checkresult type='host'>
+        <hostname>{$fake_host_name}</hostname>
+        <state>0</state>
+        <output>{$fake_output_good}</output>
+    </checkresult>
+    <checkresult type='service'>
+        <hostname>{$fake_host_name}</hostname>
+        <servicename>{$fake_service_description}</servicename>
+        <state>1</state>
+        <output>{$fake_output_bad}</output>
+    </checkresult>
 </checkresults>
-";
-?>
-<textarea cols="80" rows="15" name="XMLDATA"><?php echo htmlentities($xml);?></textarea><br>
-	<input type="submit" name="btnSubmit" value="Submit Check Data">
-	</form>
-<?php
-	exit();
-	}
+XML;
+}
 
 
-function load_plugins(){
 
-	// include all plugins
-	$p=dirname(__FILE__)."/plugins/";
-	$subdirs=scandir($p);
-	foreach($subdirs as $sd){
-		if($sd=="." || $sd=="..")
-			continue;
-		$d=$p.$sd;
-		if(is_dir($d)){
-			$pf=$d."/$sd.inc.php";
-			if(file_exists($pf)){
-				//echo "REGISTERING PLUGIN: $pf<BR>";
-				include_once($pf);
-				}
-			}
-		}
-	}
-?>
+// grab default json data output
+// with the defaults specified
+// at the beginning of the script
+function get_default_json()
+{
+    global $fake_host_name;
+    global $fake_service_description;
+    global $fake_output_good;
+    global $fake_output_bad;
+
+    /*
+
+    // this is the example format to follow for converting
+    // php arrays to json data
+
+    $json = array(
+        "checkresults" => array(
+
+            array(
+                "checkresult"   => array(
+                    "type"      => "host",
+                ),
+                "hostname"      => $fake_host_name,
+                "state"         => 0,
+                "output"        => $fake_output_good,
+                )
+            ),
+            array(
+                "checkresult"   => array(
+                    "type"      => "service",
+                ),
+                "hostname"      => $fake_host_name,
+                "servicename"   => $fake_service_description,
+                "state"         => 1,
+                "output"        => $fake_output_bad,
+                )
+            ),
+        ),
+    );
+
+    return json_encode($json, JSON_PRETTY_PRINT);
+
+    */
+    
+    return <<<JSON
+{
+    "checkresults": [
+        {
+            "checkresult": {
+                "type": "host"
+            },
+            "hostname": "{$fake_host_name}",
+            "state": "0",
+            "output": "{$fake_output_good}"
+        },
+        {
+            "checkresult": {
+                "type": "service"
+            },
+            "hostname": "{$fake_host_name}",
+            "servicename": "{$fake_service_description}",
+            "state": "1",
+            "output": "{$fake_output_bad}"
+        }
+    ]
+}
+JSON;
+}
+
+
+
+// the alerts div can be at the top or the bottom
+// of the form - this way it can easily be called
+// in the html above
+function get_alerts_div()
+{
+    return <<<ALERTSDIV
+
+        <hr />
+        <!-- this is where the alerts show up -->
+        <div class="row">
+            <div class="col-12 messages">
+            </div>
+        </div>
+
+ALERTSDIV;
+}

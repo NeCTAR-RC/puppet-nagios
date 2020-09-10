@@ -39,6 +39,21 @@ class nagios::server_external (
     notify  => Service[$nagios::params::nagios_version],
   }
 
+  file {"/etc/${nagios::params::nagios_version}/objects":
+    ensure => directory,
+    owner  => root,
+    group  => root,
+    mode   => '0775',
+  }
+
+  file {"/etc/${nagios::params::nagios_version}/objects/commands.cfg":
+    ensure => file,
+    owner  => root,
+    group  => root,
+    mode   => '0664',
+    source => 'puppet:///modules/nagios/commands.cfg',
+  }
+
   # External naginator is hard coded to look here
   file { "/etc/${nagios::params::nagios_version}/commands.cfg":
     ensure  => link,

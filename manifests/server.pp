@@ -18,7 +18,7 @@ class nagios::server inherits nagios::params {
     owner   => root,
     group   => root,
     mode    => '0644',
-    content => template('nagios/nagios.cfg.erb'),
+    content => template("nagios/${nagios::params::nagios_version}.cfg.erb"),
     require => Package[$nagios::params::nagios_version],
     notify  => Service[$nagios::params::nagios_version],
   }

@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d921a9ae_cb47e1e2",
+        "filename": "manifests/nrpe/command.pp",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000104
+      },
+      "writtenOn": "2021-01-04T23:14:49Z",
+      "side": 1,
+      "message": "please move it into the `if $::osfamily \u003d\u003d \u0027Debian\u0027` block so other OS (e.g. RHEL) won\u0027t run this",
+      "range": {
+        "startLine": 4,
+        "startChar": 0,
+        "endLine": 4,
+        "endChar": 13
+      },
+      "revId": "a453cb37a967dda10ad192db74ca919570a13acc",
+      "serverId": "f182a8af-62ca-4ceb-ab81-14f8fec9c6c5",
+      "unresolved": true
+    }
+  ]
+}

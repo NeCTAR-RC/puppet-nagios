@@ -2,6 +2,8 @@
 define nagios::nrpe::command ($check_command) {
 
   if $::osfamily == 'Debian' {
+    include apt
+
     Class['Apt::Update'] -> Package <| tag == 'nrpe' |>
   }
   else {

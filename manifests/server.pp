@@ -1,5 +1,9 @@
 class nagios::server inherits nagios::params {
 
+  notify {"moved_class_nagios::server":
+    message => "The class nagios::server has been depracated please use nagios::server_external instead",
+  }
+
   $config_environment = hiera('puppet::config_environment', $::environment)
 
   $nagios_pkgs = [ $nagios::params::nagios_version, 'nagios-images']
@@ -23,7 +27,7 @@ class nagios::server inherits nagios::params {
     notify  => Service[$nagios::params::nagios_version],
   }
 
-  file { '/etc/${nagios::params::nagios_version}/extra.d':
+  file { "/etc/${nagios::params::nagios_version}/extra.d":
     ensure => directory,
   }
 

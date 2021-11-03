@@ -5,6 +5,10 @@ class nagios::server_external (
   $naginator_timeout=60,
   $use_ssl=true,
   $extra_cfg_dirs=undef,
+  $use_authentication=0,
+  $authorized_users=['nagiosadmin'],
+  $retention_update_interval=1,
+  $enable_notifications=1,
 ) inherits nagios::params {
 
   include ::nagios::nrdp
@@ -37,6 +41,14 @@ class nagios::server_external (
     content => template("nagios/${nagios::params::nagios_version}.cfg.erb"),
     require => Package[$nagios::params::nagios_version],
     notify  => Service[$nagios::params::nagios_version],
+  }
+
+  file { "/etc/${nagios::params::nagios_version}/cgi.cfg":
+    ensure  => file,
+    owner   => root,
+    group   => root,
+    mode    => '0644',
+    content => template('nagios/cgi.cfg.erb')
   }
 
   file {"/etc/${nagios::params::nagios_version}/objects":

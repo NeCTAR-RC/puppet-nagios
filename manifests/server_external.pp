@@ -47,11 +47,11 @@ class nagios::server_external (
   }
 
   file {"/etc/${nagios::params::nagios_version}/objects/commands.cfg":
-    ensure => file,
-    owner  => root,
-    group  => root,
-    mode   => '0664',
-    source => 'puppet:///modules/nagios/commands.cfg',
+    ensure  => file,
+    owner   => root,
+    group   => root,
+    mode    => '0664',
+    content => template('nagios/commands.cfg.erb'),
   }
 
   # External naginator is hard coded to look here

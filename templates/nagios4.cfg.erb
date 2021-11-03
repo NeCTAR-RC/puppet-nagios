@@ -678,7 +678,7 @@ state_retention_file=/var/lib/nagios4/retention.dat
 # data before shutting down or restarting.  If you have disabled
 # state retention, this option has no effect.
 
-retention_update_interval=60
+retention_update_interval=<%= @retention_update_interval %>
 
 
 
@@ -833,7 +833,7 @@ accept_passive_host_checks=1
 # service notifications when it is initially (re)started.
 # Values: 1 = enable notifications, 0 = disable notifications
 
-enable_notifications=1
+enable_notifications=<%= @enable_notifications %>
 
 
 

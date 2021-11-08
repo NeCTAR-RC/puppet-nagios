@@ -6,6 +6,7 @@ class nagios::server_external (
   $use_ssl=true,
   $extra_cfg_dirs=undef,
   $use_authentication=0,
+  $default_user=undef,
   $authorized_users=['nagiosadmin'],
   $retention_update_interval=1,
   $enable_notifications=1,

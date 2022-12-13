@@ -76,6 +76,7 @@ class nagios::nrpe {
 
   @service { $nrpe :
     ensure  => running,
+    enable  => true,
     alias   => 'nagios-nrpe-server',
     require => Package['nagios-nrpe-server'],
     tag     => 'nrpe',

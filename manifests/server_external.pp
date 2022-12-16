@@ -11,6 +11,7 @@ class nagios::server_external (
   $retention_update_interval=1,
   $enable_notifications=1,
   $manage_cgi=false,
+  Hash $nagios_command = {},
 ) inherits nagios::params {
 
   include ::nagios::nrdp
@@ -163,20 +164,31 @@ class nagios::server_external (
   $servicegroups = hiera('nagios::servicegroups', {})
   create_resources('nagios::servicegroup', $servicegroups)
 
-  nagios::command {
-    'http_port':
-      command_line => '$USER1$/check_http -p $ARG1$ -H $HOSTADDRESS$ -I $HOSTADDRESS$ -a \'$ARG2$\'';
-    'https_port':
-      command_line => '$USER1$/check_http --ssl -p $ARG1$ -H $HOSTADDRESS$ -I $HOSTADDRESS$ -a \'$ARG2$\' -C 60,30';
-    'http_port_extra':
-      command_line => '$USER1$/check_http -p $ARG1$ -H $HOSTADDRESS$ -I $HOSTADDRESS$ -a \'$ARG2$\' -u \'$ARG3$\' -e \'$ARG4$\'';
-    'https_port_extra':
-      command_line => '$USER1$/check_http --ssl -p $ARG1$ -H $HOSTADDRESS$ -I $HOSTADDRESS$ -a \'$ARG2$\' -u \'$ARG3$\' -e \'$ARG4$\' -C 60,30';
-    'oslo_healthcheck':
-      command_line => '$USER1$/check_http -p $ARG1$ -H $HOSTADDRESS$ -I $HOSTADDRESS$  -u \'/healthcheck\' -e \'OK\'';
-    'oslo_healthcheck_https':
-      command_line => '$USER1$/check_http --ssl -p $ARG1$ -H $HOSTADDRESS$ -I $HOSTADDRESS$  -u \'/healthcheck\' -e \'OK\' -C 60,30';
-    'check_ping2':
-      command_line => '$USER1$/check_ping -H $ARG1$ -w 5000,100% -c 5000,100% -p 1';
+  $nagios_command_default = {
+    'http_port' => {
+      'command_line' => '$USER1$/check_http -p $ARG1$ -H $HOSTADDRESS$ -I $HOSTADDRESS$ -a \'$ARG2$\''
+    },
+    'https_port' => {
+      'command_line' => '$USER1$/check_http --ssl -p $ARG1$ -H $HOSTADDRESS$ -I $HOSTADDRESS$ -a \'$ARG2$\' -C 60,30'
+    },
+    'http_port_extra' => {
+      'command_line' => '$USER1$/check_http -p $ARG1$ -H $HOSTADDRESS$ -I $HOSTADDRESS$ -a \'$ARG2$\' -u \'$ARG3$\' -e \'$ARG4$\''
+    },
+    'https_port_extra' => {
+      'command_line' => '$USER1$/check_http --ssl -p $ARG1$ -H $HOSTADDRESS$ -I $HOSTADDRESS$ -a \'$ARG2$\' -u \'$ARG3$\' -e \'$ARG4$\' -C 60,30'
+    },
+    'oslo_healthcheck' => {
+      'command_line' => '$USER1$/check_http -p $ARG1$ -H $HOSTADDRESS$ -I $HOSTADDRESS$  -u \'/healthcheck\' -e \'OK\''
+    },
+    'oslo_healthcheck_https' => {
+      'command_line' => '$USER1$/check_http --ssl -p $ARG1$ -H $HOSTADDRESS$ -I $HOSTADDRESS$  -u \'/healthcheck\' -e \'OK\' -C 60,30'
+    },
+    'check_ping2' => {
+      'command_line' => '$USER1$/check_ping -H $ARG1$ -w 5000,100% -c 5000,100% -p 1'
+    },
   }
+
+  $nagios_command_real = merge($nagios_command_default, $nagios_command)
+  create_resources('nagios::command', $nagios_command_real)
+
 }

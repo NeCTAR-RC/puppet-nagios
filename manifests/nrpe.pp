@@ -69,10 +69,12 @@ class nagios::nrpe {
     $user_groups = ['users',]
   }
 
-  user { $nrpe_user:
+  @user { $nrpe_user:
     groups  => $user_groups,
     require => Package['nagios-nrpe-server'],
   }
+
+  User <| title == $nrpe_user |>
 
   @service { $nrpe :
     ensure  => running,

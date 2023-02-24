@@ -1,7 +1,9 @@
 # Set up the nrpe service to report to servers nagios::hosts.
 class nagios::nrpe {
 
-  $nagios_hosts = hiera('nagios::hosts', [])
+  include nagios
+
+  $nagios_hosts = $nagios::hosts
 
   $nrpe = $::osfamily ? {
     'RedHat' => 'nrpe',

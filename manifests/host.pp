@@ -5,10 +5,11 @@ class nagios::host (
   $hostgroups = 'absent',
   $use = 'generic-host',
 ){
-  $config_environment = hiera('puppet::config_environment', $::environment)
+
+  include puppet
 
   @@nagios_host { $::fqdn:
-    tag     => $config_environment,
+    tag     => $puppet::config_environment,
     address => $address,
     alias   => $nagios_alias,
     mode    => '0644',

@@ -3,9 +3,8 @@ define nagios::command (
   $check_command = undef,
 ) {
 
+  include puppet
   include nagios::params
-
-  $config_environment = hiera('puppet::config_environment', $::environment)
 
   if ($command_line != undef) {
     $command = $command_line
@@ -19,7 +18,7 @@ define nagios::command (
 
   @@nagios_command {
     $name:
-      tag          => $config_environment,
+      tag          => $puppet::config_environment,
       mode         => '0644',
       target       => "/etc/${nagios::params::nagios_version}/conf.d/${name}.cfg",
       command_line => $command,

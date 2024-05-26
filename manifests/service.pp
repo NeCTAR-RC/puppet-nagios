@@ -66,9 +66,8 @@ define nagios::service (
   $retry_check_interval         = undef,
 ) {
 
+  include puppet
   include nagios::params
-
-  $config_environment = hiera('puppet::config_environment', $::environment)
 
   if $normal_check_interval {
     warning('normal_check_interval parameter is deprecated. Please use check_interval instead.')
@@ -134,7 +133,7 @@ define nagios::service (
     stalking_options             => $stalking_options,
     target                       => $target,
     use                          => $use,
-    tag                          => $config_environment,
+    tag                          => $puppet::config_environment,
     notify                       => Service[$nagios::params::nagios_version],
     service_description          => $_service_description,
   }

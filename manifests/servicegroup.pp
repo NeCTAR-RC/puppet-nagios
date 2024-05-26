@@ -10,11 +10,11 @@ define nagios::servicegroup (
   $use                  = undef,
 ) {
 
-  $config_environment = hiera('puppet::config_environment', $::environment)
+  include puppet
 
   @@nagios_servicegroup {
     $name:
-      tag                  => $config_environment,
+      tag                  => $puppet::config_environment,
       alias                => $description,
       members              => $members,
       notes                => $notes,

@@ -7,7 +7,8 @@ define nagios::contact (
   $service_notification_options  = 'w,u,c,r',
   $service_notification_period,
 ) {
-  $config_environment = hiera('puppet::config_environment', $::environment)
+
+  include puppet
 
   if ($email == undef) {
     $contact_email = $name
@@ -17,7 +18,7 @@ define nagios::contact (
 
  nagios_contact {
     $name:
-      tag                           => $config_environment,
+      tag                           => $puppet::config_environment,
       alias                         => $name,
       email                         => $contact_email,
       host_notification_commands    => $host_notification_commands,

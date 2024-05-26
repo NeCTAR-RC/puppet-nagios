@@ -5,31 +5,31 @@ class nagios::nrpe {
 
   $nagios_hosts = $nagios::hosts
 
-  $nrpe = $::osfamily ? {
+  $nrpe = $facts['os']['family'] ? {
     'RedHat' => 'nrpe',
     'Debian' => 'nagios-nrpe-server',
     default  => 'nagios-nrpe-server',
   }
 
-  $nrpe_user = $::osfamily ? {
+  $nrpe_user = $facts['os']['family'] ? {
     'RedHat' => 'nrpe',
     'Debian' => 'nagios',
     default  => 'nagios',
   }
 
-  $nagios_plugin = $::osfamily ? {
+  $nagios_plugin = $facts['os']['family'] ? {
     'RedHat' => 'nagios-plugins',
     'Debian' => 'monitoring-plugins',
     default  => 'monitoring-plugins',
   }
 
-  $nrpe_plugin = $::osfamily ? {
+  $nrpe_plugin = $facts['os']['family'] ? {
     'RedHat' => 'nagios-plugins-nrpe',
     'Debian' => 'nagios-nrpe-plugin',
     default  => 'nagios-nrpe-plugin',
   }
 
-  $nagios_plugins_contrib = $::osfamily ? {
+  $nagios_plugins_contrib = $facts['os']['family'] ? {
     'RedHat' => 'nagios-plugins-all',
     'Debian' => 'nagios-plugins-contrib',
     default  => 'nagios-plugins-contrib',
@@ -53,7 +53,7 @@ class nagios::nrpe {
       tag    => 'nrpe';
   }
 
-  if ($::osfamily == 'RedHat') and ($::architecture == 'x86_64') {
+  if ($facts['os']['family'] == 'RedHat') and ($facts['os']['architecture'] == 'x86_64') {
     @file { '/usr/lib/nagios':
       ensure  => link,
       target  => '/usr/lib64/nagios',
@@ -63,7 +63,7 @@ class nagios::nrpe {
   }
 
   # check if client is running puppet 3
-  $puppet3 = (versioncmp($::puppetversion,'4.0.0') < 0)
+  $puppet3 = (versioncmp($facts['puppetversion'],'4.0.0') < 0)
   if $puppet3 {
     $user_groups = ['users', 'puppet',]
   }

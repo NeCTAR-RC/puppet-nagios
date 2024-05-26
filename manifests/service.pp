@@ -14,7 +14,7 @@
 #
 define nagios::service (
   $ensure                       = present,
-  $host_name                    = $::fqdn,
+  $host_name                    = $facts['networking']['fqdn'],
   $mode                         = '0644',
   $action_url                   = undef,
   $active_checks_enabled        = undef,
@@ -83,7 +83,7 @@ define nagios::service (
     default  => $service_description
   }
 
-  @@nagios_service { "${::fqdn}_${name}":
+  @@nagios_service { "${facts['networking']['fqdn']}_${name}":
     ensure                       => $ensure,
     action_url                   => $action_url,
     active_checks_enabled        => $active_checks_enabled,

@@ -12,7 +12,7 @@ define nagios::command (
     if ($check_command != undef) {
       $command = $check_command
     } else {
-      fail("Need to define either check_command or command_line")
+      fail('Need to define either check_command or command_line')
     }
   }
 

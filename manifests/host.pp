@@ -1,14 +1,14 @@
 class nagios::host (
   $parents = 'absent',
-  $address = $::ipaddress,
-  $nagios_alias = $::fqdn,
+  $address = $facts['networking']['ip'],
+  $nagios_alias = $facts['networking']['fqdn'],
   $hostgroups = 'absent',
   $use = 'generic-host',
 ){
 
   include puppet
 
-  @@nagios_host { $::fqdn:
+  @@nagios_host { $facts['networking']['fqdn']:
     tag     => $puppet::config_environment,
     address => $address,
     alias   => $nagios_alias,

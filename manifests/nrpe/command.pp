@@ -1,7 +1,7 @@
 #Type to create nagios check commands.
 define nagios::nrpe::command ($check_command) {
 
-  if $::osfamily == 'Debian' {
+  if $facts['os']['family'] == 'Debian' {
     include apt
 
     Class['Apt::Update'] -> Package <| tag == 'nrpe' |>

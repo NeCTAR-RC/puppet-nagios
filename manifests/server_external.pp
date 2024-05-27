@@ -19,6 +19,7 @@ class nagios::server_external (
   include stdlib
 
   $naginator = hiera('nagios::naginator', {})
+  $config_environment = $puppet::config_environment
 
   $nagios_pkgs = [ $nagios::params::nagios_version, 'nagios-images']
 
@@ -151,13 +152,13 @@ class nagios::server_external (
   # Legacy groups
   @@nagios_servicegroup {
     'openstack-endpoints':
-      tag   => $puppet::config_environment,
+      tag   => $config_environment,
       alias => 'The user facing endpoints.';
     'message-queues':
-      tag   => $puppet::config_environment,
+      tag   => $config_environment,
       alias => 'RabbitMQ and other queues.';
     'databases':
-      tag   => $puppet::config_environment,
+      tag   => $config_environment,
       alias => 'Database Servers.';
   }
 

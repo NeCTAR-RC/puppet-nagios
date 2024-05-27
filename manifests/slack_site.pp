@@ -8,12 +8,6 @@ define nagios::slack_site {
   $slack_api_domain = hiera('slack_api_domain')
   $slack_api_token = hiera('slack_api_token')
 
-  if defined('$::http_proxy') and str2bool($facts['rfc1918_gateway']) {
-    $slack_proxy = "--proxy ${facts['http_proxy']}"
-  } else {
-    $slack_proxy = ''
-  }
-
   nagios_contact { "slack-${name}":
     alias                         => "Slack ${name}",
     tag                           => $puppet::config_environment,
@@ -27,12 +21,12 @@ define nagios::slack_site {
 
   nagios_command { "notify-host-by-slack-${name}":
     tag          => $puppet::config_environment,
-    command_line => "/usr/local/bin/slack-nagios ${slack_proxy} --domain ${slack_api_domain} --token ${slack_api_token} -field slack_channel=\"#alerts-${name}\" -field HOSTALIAS=\"\$HOSTNAME\$\" -field HOSTSTATE=\"\$HOSTSTATE\$\" -field HOSTOUTPUT=\"\$HOSTOUTPUT\$\" -field NOTIFICATIONTYPE=\"\$NOTIFICATIONTYPE\$\""
+    command_line => "/usr/local/bin/slack-nagios --domain ${slack_api_domain} --token ${slack_api_token} -field slack_channel=\"#alerts-${name}\" -field HOSTALIAS=\"\$HOSTNAME\$\" -field HOSTSTATE=\"\$HOSTSTATE\$\" -field HOSTOUTPUT=\"\$HOSTOUTPUT\$\" -field NOTIFICATIONTYPE=\"\$NOTIFICATIONTYPE\$\""
   }
 
   nagios_command { "notify-service-by-slack-${name}":
     tag          => $puppet::config_environment,
-    command_line => "/usr/local/bin/slack-nagios ${slack_proxy} --domain ${slack_api_domain} --token ${slack_api_token} -field slack_channel=\"#alerts-${name}\" -field HOSTALIAS=\"\$HOSTNAME\$\" -field SERVICEDESC=\"\$SERVICEDESC\$\" -field SERVICESTATE=\"\$SERVICESTATE\$\" -field SERVICEOUTPUT=\"\$SERVICEOUTPUT\$\" -field NOTIFICATIONTYPE=\"\$NOTIFICATIONTYPE\$\""
+    command_line => "/usr/local/bin/slack-nagios --domain ${slack_api_domain} --token ${slack_api_token} -field slack_channel=\"#alerts-${name}\" -field HOSTALIAS=\"\$HOSTNAME\$\" -field SERVICEDESC=\"\$SERVICEDESC\$\" -field SERVICESTATE=\"\$SERVICESTATE\$\" -field SERVICEOUTPUT=\"\$SERVICEOUTPUT\$\" -field NOTIFICATIONTYPE=\"\$NOTIFICATIONTYPE\$\""
   }
 
 }

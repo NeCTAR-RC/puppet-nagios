@@ -62,14 +62,7 @@ class nagios::nrpe {
     }
   }
 
-  # check if client is running puppet 3
-  $puppet3 = (versioncmp($facts['puppetversion'],'4.0.0') < 0)
-  if $puppet3 {
-    $user_groups = ['users', 'puppet',]
-  }
-  else {
-    $user_groups = ['users',]
-  }
+  $user_groups = ['users',]
 
   @user { $nrpe_user:
     groups  => $user_groups,

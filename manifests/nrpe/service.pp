@@ -10,15 +10,15 @@ define nagios::nrpe::service (
   $notification_options  = undef,
   $contact_groups        = undef,
   $servicegroups         = undef,
-  $use                   = lookup('nagios::service::use', undef, undef, 'generic-service'),
+  # When undef, nagios::service resolves the default via lookup
+  $use                   = undef,
   $service_description   = 'absent',
   $nrpe_command          = 'check_nrpe_1arg',
   # DEPRECATED PARAMETERS
   $normal_check_interval = undef,
   $retry_check_interval  = undef,
 ) {
-
-  include ::nagios::nrpe
+  include nagios::nrpe
 
   if $normal_check_interval {
     warning('normal_check_interval parameter is deprecated. Please use check_interval instead.')
@@ -29,7 +29,7 @@ define nagios::nrpe::service (
   }
 
   # Only add NRPE checks if this host is using NRPE
-  if defined(Service[$::nagios::nrpe::nrpe]) {
+  if defined(Service[$nagios::nrpe::nrpe]) {
     nagios::nrpe::command {
       $name:
         check_command => $check_command;

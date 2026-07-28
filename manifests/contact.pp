@@ -1,13 +1,12 @@
 define nagios::contact (
+  $host_notification_period,
+  $service_notification_period,
   $email                         = undef,
   $host_notification_commands    = 'notify-host-by-email',
   $host_notification_options     = 'd,r',
-  $host_notification_period,
   $service_notification_commands = 'notify-service-by-email',
   $service_notification_options  = 'w,u,c,r',
-  $service_notification_period,
 ) {
-
   include puppet
 
   if ($email == undef) {
@@ -16,7 +15,7 @@ define nagios::contact (
     $contact_email = $email
   }
 
- nagios_contact {
+  nagios_contact {
     $name:
       tag                           => $puppet::config_environment,
       alias                         => $name,
@@ -27,5 +26,5 @@ define nagios::contact (
       service_notification_commands => $service_notification_commands,
       service_notification_options  => $service_notification_options,
       service_notification_period   => $service_notification_period,
- }
+  }
 }

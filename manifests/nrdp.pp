@@ -1,6 +1,5 @@
 # Set up the Nagios NRDP PHP application
 class nagios::nrdp inherits nagios::params {
-
   # Installed from https://github.com/NagiosEnterprises/nrdp
   # but with one change to the code:
   #
@@ -23,15 +22,15 @@ class nagios::nrdp inherits nagios::params {
     group  => 'www-data',
   }
 
-  file { [ '/opt/nrdp',
+  file { ['/opt/nrdp',
       '/opt/nrdp/includes',
       '/opt/nrdp/plugins',
       '/opt/nrdp/plugins/nagioscorecmd',
-      '/opt/nrdp/plugins/nagioscorepassivecheck']:
-    ensure => directory,
-    mode   => '0755',
-    owner  => 'root',
-    group  => 'root',
+    '/opt/nrdp/plugins/nagioscorepassivecheck']:
+      ensure => directory,
+      mode   => '0755',
+      owner  => 'root',
+      group  => 'root',
   }
   -> file { '/opt/nrdp/config.inc.php':
     content => template('nagios/nrdp-config.inc.php.erb'),
@@ -62,15 +61,15 @@ class nagios::nrdp inherits nagios::params {
     group  => 'root',
   }
 
-  if defined(Class['::apacheold']) {
+  if defined(Class['apacheold']) {
     exec { '/usr/sbin/a2enconf nrdp':
       creates => '/etc/apache2/conf-enabled/nrdp.conf',
       notify  => Service['apache2'],
       require => File['/etc/apache2/conf-available/nrdp.conf'],
     }
   } else {
-    ::apache::custom_config {'nrdp':
-      source => '/etc/apache2/conf-available/nrdp.conf'
+    apache::custom_config { 'nrdp':
+      source => '/etc/apache2/conf-available/nrdp.conf',
     }
   }
 }

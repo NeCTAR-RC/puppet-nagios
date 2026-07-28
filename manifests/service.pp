@@ -13,6 +13,7 @@
 #  default file locations. This is an architectural limitation.
 #
 define nagios::service (
+  $check_command,
   $ensure                       = present,
   $host_name                    = $facts['networking']['fqdn'],
   $mode                         = '0644',
@@ -59,13 +60,11 @@ define nagios::service (
   $servicegroups                = undef,
   $stalking_options             = undef,
   $target                       = undef,
-  $use                          = lookup('nagios::service::use', undef, undef, 'generic-service'),
-  $check_command,
+  $use                          = undef,
   # DEPRECATED PARAMETERS
   $normal_check_interval        = undef,
   $retry_check_interval         = undef,
 ) {
-
   include puppet
   include nagios::params
 
@@ -82,6 +81,10 @@ define nagios::service (
     'absent' => $name,
     default  => $service_description
   }
+
+  # Defined types get no automatic parameter lookup, so resolve
+  # the hiera-configurable default here
+  $_use = pick($use, lookup('nagios::service::use', undef, undef, 'generic-service'))
 
   @@nagios_service { "${facts['networking']['fqdn']}_${name}":
     ensure                       => $ensure,
@@ -132,7 +135,7 @@ define nagios::service (
     servicegroups                => $servicegroups,
     stalking_options             => $stalking_options,
     target                       => $target,
-    use                          => $use,
+    use                          => $_use,
     tag                          => $puppet::config_environment,
     notify                       => Service[$nagios::params::nagios_version],
     service_description          => $_service_description,

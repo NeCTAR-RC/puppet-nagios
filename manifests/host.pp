@@ -1,11 +1,10 @@
 class nagios::host (
-  $parents = 'absent',
-  $address = $facts['networking']['ip'],
+  $parents      = 'absent',
+  $address      = $facts['networking']['ip'],
   $nagios_alias = $facts['networking']['fqdn'],
-  $hostgroups = 'absent',
-  $use = 'generic-host',
-){
-
+  $hostgroups   = 'absent',
+  $use          = 'generic-host',
+) {
   include puppet
 
   @@nagios_host { $facts['networking']['fqdn']:
@@ -17,12 +16,14 @@ class nagios::host (
   }
 
   if ($hostgroups != 'absent') {
-    Nagios_host[$fqdn] {
-      hostgroups => $hostgroups }
+    Nagios_host[$facts['networking']['fqdn']] {
+      hostgroups => $hostgroups,
+    }
   }
 
   if ($parents != 'absent') {
-    Nagios_host[$fqdn] {
-      parents => $parents }
+    Nagios_host[$facts['networking']['fqdn']] {
+      parents => $parents,
+    }
   }
 }

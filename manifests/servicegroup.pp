@@ -9,7 +9,6 @@ define nagios::servicegroup (
   $register             = undef,
   $use                  = undef,
 ) {
-
   include puppet
 
   @@nagios_servicegroup {

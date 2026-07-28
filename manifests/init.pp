@@ -3,6 +3,4 @@
 
 class nagios (
   Array[String] $hosts = [],
-){
-
-}
+) {}

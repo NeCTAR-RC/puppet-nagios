@@ -1,19 +1,18 @@
 # Nagios external server
 class nagios::server_external (
   $puppetdb_host,
-  $puppetdb_port=8081,
-  $naginator_timeout=60,
-  $use_ssl=true,
-  $extra_cfg_dirs=undef,
-  $use_authentication=0,
-  $default_user=undef,
-  $authorized_users=['nagiosadmin'],
-  $retention_update_interval=1,
-  $enable_notifications=1,
-  $manage_cgi=false,
-  Hash $nagios_command = {},
+  $puppetdb_port             = 8081,
+  $naginator_timeout         = 60,
+  $use_ssl                   = true,
+  $extra_cfg_dirs            = undef,
+  $use_authentication        = 0,
+  $default_user              = undef,
+  $authorized_users          = ['nagiosadmin'],
+  $retention_update_interval = 1,
+  $enable_notifications      = 1,
+  $manage_cgi                = false,
+  Hash $nagios_command       = {},
 ) inherits nagios::params {
-
   include puppet
   include nagios::nrdp
   include stdlib
@@ -21,12 +20,12 @@ class nagios::server_external (
   $naginator = lookup('nagios::naginator', undef, undef, {})
   $config_environment = $puppet::config_environment
 
-  $nagios_pkgs = [ $nagios::params::nagios_version, 'nagios-images']
+  $nagios_pkgs = [$nagios::params::nagios_version, 'nagios-images']
 
   package { $nagios_pkgs:
     ensure => present,
-    notify => Exec[ 'nagios_exec_fix', 'nagios_exec_fix1',
-                    'nagios_exec_fix_2', 'nagios_exec_fix_3'],
+    notify => Exec['nagios_exec_fix', 'nagios_exec_fix1',
+    'nagios_exec_fix_2', 'nagios_exec_fix_3'],
   }
 
   service { $nagios::params::nagios_version:
@@ -53,18 +52,18 @@ class nagios::server_external (
       owner   => root,
       group   => root,
       mode    => '0644',
-      content => template('nagios/cgi.cfg.erb')
+      content => template('nagios/cgi.cfg.erb'),
     }
   }
 
-  file {"/etc/${nagios::params::nagios_version}/objects":
+  file { "/etc/${nagios::params::nagios_version}/objects":
     ensure => directory,
     owner  => root,
     group  => root,
     mode   => '0775',
   }
 
-  file {"/etc/${nagios::params::nagios_version}/objects/commands.cfg":
+  file { "/etc/${nagios::params::nagios_version}/objects/commands.cfg":
     ensure  => file,
     owner   => root,
     group   => root,
@@ -163,33 +162,40 @@ class nagios::server_external (
   }
 
   $servicegroups = lookup('nagios::servicegroups', undef, undef, {})
-  create_resources('nagios::servicegroup', $servicegroups)
+  $servicegroups.each |$servicegroup_name, $servicegroup_params| {
+    nagios::servicegroup { $servicegroup_name:
+      * => $servicegroup_params,
+    }
+  }
 
   $nagios_command_default = {
     'http_port' => {
-      'command_line' => '$USER1$/check_http -p $ARG1$ -H $HOSTADDRESS$ -I $HOSTADDRESS$ -a \'$ARG2$\''
+      'command_line' => '$USER1$/check_http -p $ARG1$ -H $HOSTADDRESS$ -I $HOSTADDRESS$ -a \'$ARG2$\'',
     },
     'https_port' => {
-      'command_line' => '$USER1$/check_http --ssl -p $ARG1$ -H $HOSTADDRESS$ -I $HOSTADDRESS$ -a \'$ARG2$\' -C 60,30'
+      'command_line' => '$USER1$/check_http --ssl -p $ARG1$ -H $HOSTADDRESS$ -I $HOSTADDRESS$ -a \'$ARG2$\' -C 60,30',
     },
     'http_port_extra' => {
-      'command_line' => '$USER1$/check_http -p $ARG1$ -H $HOSTADDRESS$ -I $HOSTADDRESS$ -a \'$ARG2$\' -u \'$ARG3$\' -e \'$ARG4$\''
+      'command_line' => '$USER1$/check_http -p $ARG1$ -H $HOSTADDRESS$ -I $HOSTADDRESS$ -a \'$ARG2$\' -u \'$ARG3$\' -e \'$ARG4$\'',
     },
     'https_port_extra' => {
-      'command_line' => '$USER1$/check_http --ssl -p $ARG1$ -H $HOSTADDRESS$ -I $HOSTADDRESS$ -a \'$ARG2$\' -u \'$ARG3$\' -e \'$ARG4$\' -C 60,30'
+      'command_line' => '$USER1$/check_http --ssl -p $ARG1$ -H $HOSTADDRESS$ -I $HOSTADDRESS$ -a \'$ARG2$\' -u \'$ARG3$\' -e \'$ARG4$\' -C 60,30',
     },
     'oslo_healthcheck' => {
-      'command_line' => '$USER1$/check_http -p $ARG1$ -H $HOSTADDRESS$ -I $HOSTADDRESS$  -u \'/healthcheck\' -e \'OK\''
+      'command_line' => '$USER1$/check_http -p $ARG1$ -H $HOSTADDRESS$ -I $HOSTADDRESS$  -u \'/healthcheck\' -e \'OK\'',
     },
     'oslo_healthcheck_https' => {
-      'command_line' => '$USER1$/check_http --ssl -p $ARG1$ -H $HOSTADDRESS$ -I $HOSTADDRESS$  -u \'/healthcheck\' -e \'OK\' -C 60,30'
+      'command_line' => '$USER1$/check_http --ssl -p $ARG1$ -H $HOSTADDRESS$ -I $HOSTADDRESS$  -u \'/healthcheck\' -e \'OK\' -C 60,30',
     },
     'check_ping2' => {
-      'command_line' => '$USER1$/check_ping -H $ARG1$ -w 5000,100% -c 5000,100% -p 1'
+      'command_line' => '$USER1$/check_ping -H $ARG1$ -w 5000,100% -c 5000,100% -p 1',
     },
   }
 
-  $nagios_command_real = merge($nagios_command_default, $nagios_command)
-  create_resources('nagios::command', $nagios_command_real)
-
+  $nagios_command_real = $nagios_command_default + $nagios_command
+  $nagios_command_real.each |$command_name, $command_params| {
+    nagios::command { $command_name:
+      * => $command_params,
+    }
+  }
 }

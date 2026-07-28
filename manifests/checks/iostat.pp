@@ -1,5 +1,4 @@
 class nagios::checks::iostat {
-
   include nagios
 
   package { 'sysstat':

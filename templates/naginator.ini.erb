@@ -1,8 +1,8 @@
 [puppet]
 environment=<%= @config_environment %>
 <%- if @use_ssl -%>
-ssl_cert=<%= @puppet_ssldir %>/certs/<%= @fqdn %>.pem
-ssl_key=<%= @puppet_ssldir %>/private_keys/<%= @fqdn %>.pem
+ssl_cert=<%= @puppet_ssldir %>/certs/<%= @facts['networking']['fqdn'] %>.pem
+ssl_key=<%= @puppet_ssldir %>/private_keys/<%= @facts['networking']['fqdn'] %>.pem
 ca_cert=<%= @puppet_ssldir %>/certs/ca.pem
 <%- end -%>
 timeout=<%= @naginator_timeout %>

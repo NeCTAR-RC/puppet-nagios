@@ -1,0 +1,14 @@
+# from puppetlabs_spec_helper
+--fail-on-warnings
+--relative
+--no-80chars-check
+--no-140chars-check
+--no-class_inherits_from_params_class-check
+--no-autoloader_layout-check
+--no-documentation-check
+--no-single_quote_string_with_variables-check
+# from puppet-openstack_spec_helper
+--no-only_variable_string-check
+# voxpupuli plugin checks too noisy for this legacy module
+--no-parameter_documentation-check
+--no-parameter_types-check

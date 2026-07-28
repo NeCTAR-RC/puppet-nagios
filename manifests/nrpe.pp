@@ -1,6 +1,5 @@
 # Set up the nrpe service to report to servers nagios::hosts.
 class nagios::nrpe {
-
   include nagios
 
   $nagios_hosts = $nagios::hosts
@@ -90,7 +89,7 @@ class nagios::nrpe {
   }
 
   $plugin_dirs = ['/etc/nagios-plugins', '/etc/nagios-plugins/config',
-                  '/etc/nagios', '/etc/nagios/nrpe.d',]
+  '/etc/nagios', '/etc/nagios/nrpe.d',]
 
   file { $plugin_dirs:
     ensure => directory,

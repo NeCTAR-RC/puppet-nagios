@@ -2,7 +2,6 @@ define nagios::command (
   $command_line = undef,
   $check_command = undef,
 ) {
-
   include puppet
   include nagios::params
 
@@ -23,5 +22,4 @@ define nagios::command (
       target       => "/etc/${nagios::params::nagios_version}/conf.d/${name}.cfg",
       command_line => $command,
   }
-
 }

@@ -1,6 +1,5 @@
 # Nagios to slack integration
 class nagios::slack {
-
   ensure_packages(['libwww-perl', 'libcrypt-ssleay-perl'])
 
   file { '/usr/local/bin/slack-nagios':
@@ -10,5 +9,4 @@ class nagios::slack {
     mode   => '0755',
     source => 'puppet:///modules/nagios/slack-nagios',
   }
-
 }

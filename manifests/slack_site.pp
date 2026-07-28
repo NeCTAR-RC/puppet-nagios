@@ -1,7 +1,6 @@
 # Config for generating contact and command resources for
 # Nagios/Slack integration
 define nagios::slack_site {
-
   include puppet
   include nagios::slack
 
@@ -21,17 +20,16 @@ define nagios::slack_site {
     host_notification_period      => '24x7',
     service_notification_period   => '24x7',
     host_notification_options     => 'd,r',
-    service_notification_options  => 'w,u,c,r'
+    service_notification_options  => 'w,u,c,r',
   }
 
   nagios_command { "notify-host-by-slack-${name}":
     tag          => $puppet::config_environment,
-    command_line => "/usr/local/bin/slack-nagios --domain ${slack_api_domain} --token ${slack_api_token}${proxy_opt} -field slack_channel=\"#alerts-${name}\" -field HOSTALIAS=\"\$HOSTNAME\$\" -field HOSTSTATE=\"\$HOSTSTATE\$\" -field HOSTOUTPUT=\"\$HOSTOUTPUT\$\" -field NOTIFICATIONTYPE=\"\$NOTIFICATIONTYPE\$\""
+    command_line => "/usr/local/bin/slack-nagios --domain ${slack_api_domain} --token ${slack_api_token}${proxy_opt} -field slack_channel=\"#alerts-${name}\" -field HOSTALIAS=\"\$HOSTNAME\$\" -field HOSTSTATE=\"\$HOSTSTATE\$\" -field HOSTOUTPUT=\"\$HOSTOUTPUT\$\" -field NOTIFICATIONTYPE=\"\$NOTIFICATIONTYPE\$\"",
   }
 
   nagios_command { "notify-service-by-slack-${name}":
     tag          => $puppet::config_environment,
-    command_line => "/usr/local/bin/slack-nagios --domain ${slack_api_domain} --token ${slack_api_token}${proxy_opt} -field slack_channel=\"#alerts-${name}\" -field HOSTALIAS=\"\$HOSTNAME\$\" -field SERVICEDESC=\"\$SERVICEDESC\$\" -field SERVICESTATE=\"\$SERVICESTATE\$\" -field SERVICEOUTPUT=\"\$SERVICEOUTPUT\$\" -field NOTIFICATIONTYPE=\"\$NOTIFICATIONTYPE\$\""
+    command_line => "/usr/local/bin/slack-nagios --domain ${slack_api_domain} --token ${slack_api_token}${proxy_opt} -field slack_channel=\"#alerts-${name}\" -field HOSTALIAS=\"\$HOSTNAME\$\" -field SERVICEDESC=\"\$SERVICEDESC\$\" -field SERVICESTATE=\"\$SERVICESTATE\$\" -field SERVICEOUTPUT=\"\$SERVICEOUTPUT\$\" -field NOTIFICATIONTYPE=\"\$NOTIFICATIONTYPE\$\"",
   }
-
 }

@@ -14,7 +14,7 @@ class nagios::nrdp inherits nagios::params {
 
   ensure_packages(['php-xml'])
 
-  $nrdp_tokens = hiera('nagios::nrdp_tokens', [])
+  $nrdp_tokens = lookup('nagios::nrdp_tokens', undef, undef, [])
 
   file { "/var/lib/${nagios::params::nagios_version}/tmp":
     ensure => directory,

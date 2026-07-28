@@ -18,7 +18,7 @@ class nagios::server_external (
   include nagios::nrdp
   include stdlib
 
-  $naginator = hiera('nagios::naginator', {})
+  $naginator = lookup('nagios::naginator', undef, undef, {})
   $config_environment = $puppet::config_environment
 
   $nagios_pkgs = [ $nagios::params::nagios_version, 'nagios-images']
@@ -162,7 +162,7 @@ class nagios::server_external (
       alias => 'Database Servers.';
   }
 
-  $servicegroups = hiera('nagios::servicegroups', {})
+  $servicegroups = lookup('nagios::servicegroups', undef, undef, {})
   create_resources('nagios::servicegroup', $servicegroups)
 
   $nagios_command_default = {

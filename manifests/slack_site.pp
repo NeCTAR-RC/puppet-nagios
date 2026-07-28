@@ -5,9 +5,9 @@ define nagios::slack_site {
   include puppet
   include nagios::slack
 
-  $slack_api_domain = hiera('slack_api_domain')
-  $slack_api_token = hiera('slack_api_token')
-  $slack_api_proxy = hiera('slack_api_proxy', undef)
+  $slack_api_domain = lookup('slack_api_domain')
+  $slack_api_token = lookup('slack_api_token')
+  $slack_api_proxy = lookup('slack_api_proxy', undef, undef, undef)
   $proxy_opt = $slack_api_proxy ? {
     undef   => '',
     default => " --proxy ${slack_api_proxy}",

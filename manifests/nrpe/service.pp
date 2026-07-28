@@ -10,7 +10,7 @@ define nagios::nrpe::service (
   $notification_options  = undef,
   $contact_groups        = undef,
   $servicegroups         = undef,
-  $use                   = hiera('nagios::service::use', 'generic-service'),
+  $use                   = lookup('nagios::service::use', undef, undef, 'generic-service'),
   $service_description   = 'absent',
   $nrpe_command          = 'check_nrpe_1arg',
   # DEPRECATED PARAMETERS

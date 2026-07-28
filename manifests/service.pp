@@ -59,7 +59,7 @@ define nagios::service (
   $servicegroups                = undef,
   $stalking_options             = undef,
   $target                       = undef,
-  $use                          = hiera('nagios::service::use', 'generic-service'),
+  $use                          = lookup('nagios::service::use', undef, undef, 'generic-service'),
   $check_command,
   # DEPRECATED PARAMETERS
   $normal_check_interval        = undef,

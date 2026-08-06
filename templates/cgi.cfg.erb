@@ -149,8 +149,8 @@ authorized_for_system_commands=<%= @authorized_users.map{ |user| "#{user}" }.joi
 # you choose to not use authorization). You may use an asterisk (*)
 # to authorize any user who has authenticated to the web server.
 
-authorized_for_all_services=<%= @authorized_users.map{ |user| "#{user}" }.join(',') %>
-authorized_for_all_hosts=<%= @authorized_users.map{ |user| "#{user}" }.join(',') %>
+authorized_for_all_services=<%= (@authorized_users + @view_users + @command_users).map{ |user| "#{user}" }.join(',') %>
+authorized_for_all_hosts=<%= (@authorized_users + @view_users + @command_users).map{ |user| "#{user}" }.join(',') %>
 
 
 
@@ -163,8 +163,8 @@ authorized_for_all_hosts=<%= @authorized_users.map{ |user| "#{user}" }.join(',')
 # authorization).  You may use an asterisk (*) to authorize any
 # user who has authenticated to the web server.
 
-authorized_for_all_service_commands=<%= @authorized_users.map{ |user| "#{user}" }.join(',') %>
-authorized_for_all_host_commands=<%= @authorized_users.map{ |user| "#{user}" }.join(',') %>
+authorized_for_all_service_commands=<%= (@authorized_users + @command_users).map{ |user| "#{user}" }.join(',') %>
+authorized_for_all_host_commands=<%= (@authorized_users + @command_users).map{ |user| "#{user}" }.join(',') %>
 
 
 

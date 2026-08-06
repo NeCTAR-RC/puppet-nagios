@@ -8,6 +8,12 @@ class nagios::server_external (
   $use_authentication        = 0,
   $default_user              = undef,
   $authorized_users          = ['nagiosadmin'],
+  # Narrower grants than authorized_users (which also gets system
+  # information/configuration/system commands): view_users may see all
+  # hosts and services in the CGIs; command_users may additionally issue
+  # host/service commands via cmd.cgi (e.g. acknowledgements).
+  Array[String] $view_users  = [],
+  Array[String] $command_users = [],
   $retention_update_interval = 1,
   $enable_notifications      = 1,
   $manage_cgi                = false,

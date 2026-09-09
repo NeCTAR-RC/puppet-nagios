@@ -30,8 +30,8 @@ class nagios::nrpe {
 
   $nagios_plugins_contrib = $facts['os']['family'] ? {
     'RedHat' => 'nagios-plugins-all',
-    'Debian' => 'nagios-plugins-contrib',
-    default  => 'nagios-plugins-contrib',
+    'Debian' => 'monitoring-plugins-contrib',
+    default  => 'monitoring-plugins-contrib',
   }
 
   @package {

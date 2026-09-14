@@ -1,6 +1,9 @@
 #Type to create the nagios config to poll nrpe checks.
+#
+# @param check_command The command line nrpe runs for this check. Pass a
+#   Sensitive value when it embeds credentials, see nagios::nrpe::command.
 define nagios::nrpe::service (
-  $check_command,
+  Variant[String, Sensitive[String]] $check_command,
   $check_period          = undef,
   $check_interval        = undef,
   $retry_interval        = undef,

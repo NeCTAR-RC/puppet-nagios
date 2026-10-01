@@ -11,7 +11,7 @@ class nagios::nrdp inherits nagios::params {
   # To allow nagios to read the stat files written by Apache without having to
   # mess with the Nagios user groups
 
-  ensure_packages(['php-xml'])
+  stdlib::ensure_packages(['php-xml'])
 
   $nrdp_tokens = lookup('nagios::nrdp_tokens', undef, undef, [])
 

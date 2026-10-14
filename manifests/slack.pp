@@ -1,6 +1,6 @@
 # Nagios to slack integration
 class nagios::slack {
-  ensure_packages(['libwww-perl', 'libcrypt-ssleay-perl'])
+  stdlib::ensure_packages(['libwww-perl', 'libcrypt-ssleay-perl'])
 
   file { '/usr/local/bin/slack-nagios':
     ensure => file,
